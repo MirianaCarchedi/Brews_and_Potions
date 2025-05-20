@@ -12,12 +12,30 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     private Vector2 originalPosition;
     public bool droppedInSlot = false;
+    private Vector2 _originalPosition;
+    public Vector2 OriginalPosition
+    {
+        get { return _originalPosition; }
+        set { _originalPosition = value; }
+    }
+
+
+
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+
+        // Carica la posizione salvata, se esiste
+        if (PlayerPrefs.HasKey(gameObject.name + "_x") && PlayerPrefs.HasKey(gameObject.name + "_y"))
+        {
+            float x = PlayerPrefs.GetFloat(gameObject.name + "_x");
+            float y = PlayerPrefs.GetFloat(gameObject.name + "_y");
+            rectTransform.anchoredPosition = new Vector2(x, y);
+        }
     }
+
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -45,10 +63,19 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        // Se non è stato droppato in uno slot valido, torna alla posizione originale
         if (!droppedInSlot)
         {
             rectTransform.anchoredPosition = originalPosition;
         }
+
+        SavePosition(); // salva la posizione anche se spostato
     }
+
+    public void SavePosition()
+    {
+        PlayerPrefs.SetFloat(gameObject.name + "_x", rectTransform.anchoredPosition.x);
+        PlayerPrefs.SetFloat(gameObject.name + "_y", rectTransform.anchoredPosition.y);
+        PlayerPrefs.Save();
+    }
+
 }
