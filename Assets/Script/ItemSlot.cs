@@ -1,41 +1,51 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
-    public DragDrop currentItem; // L'oggetto attualmente nel slot (puÚ essere null)
+    public DragDrop currentItem;
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag != null)
+        var draggedItem = eventData.pointerDrag?.GetComponent<DragDrop>();
+        if (draggedItem == null) return;
+
+        // Ignora se stesso
+        if (draggedItem == currentItem) return;
+
+        var sourceSlot = draggedItem.ParentSlot;
+        var sourcePos = draggedItem.OriginalPosition;
+
+        // Se questo slot ha gi√† un oggetto...
+        if (currentItem != null)
         {
-            DragDrop draggedItem = eventData.pointerDrag.GetComponent<DragDrop>();
-            if (draggedItem == null) return;
+            var otherItem = currentItem;
+            var otherRect = otherItem.GetComponent<RectTransform>();
 
-            RectTransform draggedRect = draggedItem.GetComponent<RectTransform>();
+            // Sposta oggetto gi√† nello slot nella posizione originaria di quello trascinato
+            otherRect.anchoredPosition = sourcePos;
+            otherItem.OriginalPosition = sourcePos;
+            otherItem.droppedInSlot = true;
 
-            // Se c'Ë gi‡ un oggetto nello slot, scambiamo le posizioni
-            if (currentItem != null && currentItem != draggedItem)
+            if (sourceSlot != null)
             {
-                Vector2 tempPos = currentItem.GetComponent<RectTransform>().anchoredPosition;
-                currentItem.GetComponent<RectTransform>().anchoredPosition = draggedItem.OriginalPosition;
-                currentItem.OriginalPosition = draggedItem.OriginalPosition;
-
-                // Aggiorna il riferimento del vecchio oggetto al suo nuovo slot (se vuoi)
+                sourceSlot.currentItem = otherItem;
+                otherItem.ParentSlot = sourceSlot;
             }
-
-            // Sposta il nuovo oggetto in questo slot
-            draggedRect.anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-
-            // Aggiorna gli stati
-            draggedItem.droppedInSlot = true;
-            draggedItem.OriginalPosition = draggedRect.anchoredPosition;
-
-            currentItem = draggedItem;
         }
+        else if (sourceSlot != null)
+        {
+            sourceSlot.currentItem = null;
+        }
+
+        // Posiziona il nuovo oggetto in questo slot
+        RectTransform draggedRect = draggedItem.GetComponent<RectTransform>();
+        draggedRect.anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
+        draggedItem.OriginalPosition = draggedRect.anchoredPosition;
+        draggedItem.droppedInSlot = true;
+        draggedItem.ParentSlot = this;
+        currentItem = draggedItem;
     }
 }
-
-
