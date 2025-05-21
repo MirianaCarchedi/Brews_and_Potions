@@ -5,47 +5,57 @@ using UnityEngine;
 
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
-    public DragDrop currentItem;
+    private void Start()
+    {
+        LoadItem();
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
-        var draggedItem = eventData.pointerDrag?.GetComponent<DragDrop>();
-        if (draggedItem == null) return;
+        GameObject droppedObject = eventData.pointerDrag;
+        if (droppedObject == null) return;
 
-        // Ignora se stesso
-        if (draggedItem == currentItem) return;
+        DragDrop draggedDrop = droppedObject.GetComponent<DragDrop>();
+        if (draggedDrop == null) return;
 
-        var sourceSlot = draggedItem.ParentSlot;
-        var sourcePos = draggedItem.OriginalPosition;
+        Transform currentSlot = transform;
+        Transform otherSlot = draggedDrop.OriginalParent;
 
-        // Se questo slot ha già un oggetto...
-        if (currentItem != null)
+        // If this slot is occupied, swap
+        if (currentSlot.childCount > 0)
         {
-            var otherItem = currentItem;
-            var otherRect = otherItem.GetComponent<RectTransform>();
+            GameObject currentChild = currentSlot.GetChild(0).gameObject;
+            DragDrop currentDragDrop = currentChild.GetComponent<DragDrop>();
 
-            // Sposta oggetto già nello slot nella posizione originaria di quello trascinato
-            otherRect.anchoredPosition = sourcePos;
-            otherItem.OriginalPosition = sourcePos;
-            otherItem.droppedInSlot = true;
+            currentChild.transform.SetParent(otherSlot, false);
+            currentDragDrop.ResetRectTransform();
+            SavePosition(currentChild.name, otherSlot.name);
+        }
 
-            if (sourceSlot != null)
+        droppedObject.transform.SetParent(currentSlot, false);
+        draggedDrop.ResetRectTransform();
+        SavePosition(droppedObject.name, currentSlot.name);
+    }
+
+    private void SavePosition(string itemName, string slotName)
+    {
+        PlayerPrefs.SetString("Item_" + itemName, slotName);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadItem()
+    {
+        foreach (Transform child in transform.root.GetComponentsInChildren<Transform>(true))
+        {
+            if (child == transform) continue;
+
+            string savedSlot = PlayerPrefs.GetString("Item_" + child.name, "");
+            if (savedSlot == name)
             {
-                sourceSlot.currentItem = otherItem;
-                otherItem.ParentSlot = sourceSlot;
+                child.SetParent(transform, false);
+                var dd = child.GetComponent<DragDrop>();
+                if (dd != null) dd.ResetRectTransform();
             }
         }
-        else if (sourceSlot != null)
-        {
-            sourceSlot.currentItem = null;
-        }
-
-        // Posiziona il nuovo oggetto in questo slot
-        RectTransform draggedRect = draggedItem.GetComponent<RectTransform>();
-        draggedRect.anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-        draggedItem.OriginalPosition = draggedRect.anchoredPosition;
-        draggedItem.droppedInSlot = true;
-        draggedItem.ParentSlot = this;
-        currentItem = draggedItem;
     }
 }
