@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
@@ -61,19 +61,16 @@ public class ItemCombiner : MonoBehaviour
                 Destroy(objA);
                 Destroy(objB);
 
-                // Crea il risultato nello slot dedicato
-                GameObject result = Instantiate(combo.resultPrefab, resultSlot);
-                result.name = combo.resultPrefab.name;
+                // ✅ Crea solo UNA volta il nuovo oggetto combinato
+                GameObject newItem = Instantiate(combo.resultPrefab);
+                newItem.transform.SetParent(resultSlot, false);
 
-                // Optional: resetta trasform
-                RectTransform rt = result.GetComponent<RectTransform>();
-                if (rt != null)
-                {
-                    rt.localScale = Vector3.one;
-                    rt.anchoredPosition = Vector2.zero;
-                    rt.offsetMin = Vector2.zero;
-                    rt.offsetMax = Vector2.zero;
-                }
+                RectTransform rt = newItem.GetComponent<RectTransform>();
+                rt.anchorMin = new Vector2(0.5f, 0.5f);
+                rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchoredPosition = Vector2.zero;
+                rt.localScale = Vector3.one;
 
                 return;
             }
@@ -81,6 +78,7 @@ public class ItemCombiner : MonoBehaviour
 
         Debug.Log("Nessuna combinazione valida trovata per: " + tagA + " + " + tagB);
     }
+
 }
 
 

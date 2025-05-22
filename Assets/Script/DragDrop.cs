@@ -9,16 +9,20 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
     public Transform OriginalParent { get; set; }
-    private Canvas canvas;
+
+    [SerializeField] private Canvas canvas;
+
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+         if (canvas == null)
+            canvas = GetComponentInParent<Canvas>();
 
-        canvas = GetComponentInParent<Canvas>();
+        if (canvas == null)
+            canvas = FindObjectOfType<Canvas>(); 
+    
     }
 
     public void OnBeginDrag(PointerEventData eventData)
