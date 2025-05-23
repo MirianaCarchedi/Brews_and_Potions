@@ -8,6 +8,7 @@ public class Mainmenu : MonoBehaviour
 {
     public void PlayGAme()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadSceneAsync("Prova_Bancone");
     }
 
@@ -19,6 +20,6 @@ public class Mainmenu : MonoBehaviour
 
     public void OpenLevel()
     {
-        SceneManager.LoadSceneAsync("Menu");
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 }
