@@ -10,7 +10,7 @@ public class SceneFader : MonoBehaviour
     public Animator fadeAnimator;
     public string sceneToLoad;
     public Image sfondoNero;
-    
+
 
     public void FadeToScene(string sceneName)
     {
@@ -18,6 +18,7 @@ public class SceneFader : MonoBehaviour
         sceneToLoad = sceneName;
         StartCoroutine(FadeAndLoad());
     }
+
 
     IEnumerator FadeAndLoad()
     {        

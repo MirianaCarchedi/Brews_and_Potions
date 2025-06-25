@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class ItemCombiner : MonoBehaviour
 {
-
     [Header("Slot di input")]
     public Transform slotA;
     public Transform slotB;
@@ -18,15 +18,13 @@ public class ItemCombiner : MonoBehaviour
     [System.Serializable]
     public class CombinationData
     {
-        public string tag1; 
-        public string tag2; 
-
+        public string tag1;
+        public string tag2;
         public GameObject resultPrefab;
     }
 
     [Header("Combinazioni possibili")]
     public List<CombinationData> combinations = new List<CombinationData>();
-
 
     private void Update()
     {
@@ -57,20 +55,8 @@ public class ItemCombiner : MonoBehaviour
 
             if (match)
             {
-                // Rimuove oggetti originali
-                Destroy(objA);
-                Destroy(objB);
-
-                // ✅ Crea solo UNA volta il nuovo oggetto combinato
-                GameObject newItem = Instantiate(combo.resultPrefab);
-                newItem.transform.SetParent(resultSlot, false);
-
-                RectTransform rt = newItem.GetComponent<RectTransform>();
-                rt.anchorMin = new Vector2(0.5f, 0.5f);
-                rt.anchorMax = new Vector2(0.5f, 0.5f);
-                rt.pivot = new Vector2(0.5f, 0.5f);
-                rt.anchoredPosition = Vector2.zero;
-                rt.localScale = Vector3.one;
+                //  Salva prefab per trasferimento alla scena successiva
+                CombinationTransfer.resultPrefabToTransfer = combo.resultPrefab;
 
                 return;
             }
@@ -78,7 +64,4 @@ public class ItemCombiner : MonoBehaviour
 
         Debug.Log("Nessuna combinazione valida trovata per: " + tagA + " + " + tagB);
     }
-
 }
-
-
