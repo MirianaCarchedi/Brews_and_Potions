@@ -10,7 +10,8 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private RectTransform rectTransform;
     public Transform OriginalParent { get; set; }
 
-    [SerializeField] private Canvas canvas;
+    [SerializeField] public Canvas canvas;
+
 
 
     private void Awake()

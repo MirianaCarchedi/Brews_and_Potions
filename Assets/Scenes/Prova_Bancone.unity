@@ -131,6 +131,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 12949367}
+  - component: {fileID: 12949368}
+  - component: {fileID: 12949369}
   - component: {fileID: 12949366}
   m_Layer: 0
   m_Name: Potion_Manager
@@ -189,6 +191,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &12949368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12949365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d486187776edad34cb7570fc36cb17c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceCanvas: {fileID: 715317179}
+  targetCanvas: {fileID: 715317181}
+  sourceSlot: {fileID: 431818307}
+  targetSlot: {fileID: 1015129104}
+--- !u!114 &12949369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12949365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd5e1452ba8d8e44783219786af02552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceCanvas: {fileID: 715317181}
+  targetCanvas: {fileID: 715317179}
+  sourceSlot: {fileID: 1015129104}
+  targetSlot: {fileID: 431818307}
 --- !u!1 &36307647
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,7 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9ee9b7ac6d7a743a46d40953cd081b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 715317179}
+  canvas: {fileID: 0}
 --- !u!114 &113929928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,7 +865,7 @@ GameObject:
   - component: {fileID: 431818307}
   - component: {fileID: 431818311}
   - component: {fileID: 431818310}
-  - component: {fileID: 431818309}
+  - component: {fileID: 431818312}
   m_Layer: 5
   m_Name: Slot_Lab
   m_TagString: Untagged
@@ -858,18 +892,6 @@ RectTransform:
   m_AnchoredPosition: {x: -790, y: -415}
   m_SizeDelta: {x: 110.4756, y: 96.5192}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &431818309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 431818306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 453c5c1bb4323dc4ea117054f975ffdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &431818310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,6 +930,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431818306}
   m_CullTransparentMesh: 1
+--- !u!114 &431818312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431818306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453c5c1bb4323dc4ea117054f975ffdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &450423834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,6 +1049,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1901395639}
         m_TargetAssemblyTypeName: SceneFader, Assembly-CSharp
         m_MethodName: FadeToSceneLab
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 12949369}
+        m_TargetAssemblyTypeName: MoveToLab, Assembly-CSharp
+        m_MethodName: MoveUIElement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1764,7 +1810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9ee9b7ac6d7a743a46d40953cd081b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 715317179}
+  canvas: {fileID: 0}
 --- !u!114 &734292885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2500,7 +2546,7 @@ GameObject:
   - component: {fileID: 1015129104}
   - component: {fileID: 1015129107}
   - component: {fileID: 1015129106}
-  - component: {fileID: 1015129105}
+  - component: {fileID: 1015129108}
   m_Layer: 5
   m_Name: Deposit_Bancone
   m_TagString: Untagged
@@ -2527,18 +2573,6 @@ RectTransform:
   m_AnchoredPosition: {x: 758, y: -331.61}
   m_SizeDelta: {x: 110.4756, y: 96.5192}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1015129105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015129103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 453c5c1bb4323dc4ea117054f975ffdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1015129106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2577,6 +2611,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015129103}
   m_CullTransparentMesh: 1
+--- !u!114 &1015129108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015129103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453c5c1bb4323dc4ea117054f975ffdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1048897262
 GameObject:
   m_ObjectHideFlags: 0
@@ -3636,7 +3682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9ee9b7ac6d7a743a46d40953cd081b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 715317179}
+  canvas: {fileID: 0}
 --- !u!114 &1420271897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3726,7 +3772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9ee9b7ac6d7a743a46d40953cd081b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 715317179}
+  canvas: {fileID: 0}
 --- !u!114 &1428570791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4843,8 +4889,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1901395636}
   - component: {fileID: 1901395637}
-  - component: {fileID: 1901395643}
-  - component: {fileID: 1901395642}
   - component: {fileID: 1901395638}
   - component: {fileID: 1901395639}
   - component: {fileID: 1901395640}
@@ -4865,7 +4909,7 @@ RectTransform:
   m_GameObject: {fileID: 1901395635}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4907,7 +4951,7 @@ MonoBehaviour:
   ArrowAnimator: {fileID: 450423836}
   fadeOut_Animator: {fileID: 2007267689}
   typingEffect: {fileID: 1901395637}
-  sfondoNero: {fileID: 0}
+  sfondoNero: {fileID: 2007267687}
   messageToDisplay: Salve
   nextMessage: Ho questo Problema ;(
   thirdMessage: Aiutami :)
@@ -4954,31 +4998,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 599705489}
---- !u!114 &1901395642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901395635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2458fb3ea4fdb349bc96a334a7a046b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetSlot: {fileID: 1015129104}
---- !u!114 &1901395643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901395635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab6502d4ba2f9c438c4e66b26b04789, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2007267685
 GameObject:
   m_ObjectHideFlags: 0
@@ -5014,7 +5033,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1920, y: -1080}
+  m_AnchoredPosition: {x: -2880, y: -1620}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2007267687
@@ -5125,7 +5144,7 @@ Animator:
   m_GameObject: {fileID: 2039112358}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3273f1e0cac97f94cba5fd64b790c29e, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5183,6 +5202,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1901395639}
         m_TargetAssemblyTypeName: SceneFader, Assembly-CSharp
         m_MethodName: FadeToSceneBancone
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 12949368}
+        m_TargetAssemblyTypeName: MoveObjectBetweenSlots, Assembly-CSharp
+        m_MethodName: MoveUIElement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5607,6 +5638,6 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 1048897263}
   - {fileID: 715317180}
-  - {fileID: 1901395636}
   - {fileID: 1843114883}
+  - {fileID: 1901395636}
   - {fileID: 12949367}

@@ -41,8 +41,9 @@ public class SceneFader : MonoBehaviour
         //  Attiva solo lo sfondo nero (non il canvas intero)
         fadeImage.gameObject.SetActive(true);
 
+        yield return null;
         //  Ora il GameObject è attivo, quindi puoi riprodurre
-        animator.Play("FadeIn_Animation");
+        animator.SetTrigger("FadeIn_Animation");
 
         yield return new WaitForSeconds(1f);
 
@@ -50,7 +51,7 @@ public class SceneFader : MonoBehaviour
         canvasToShow.gameObject.SetActive(true);
         canvasToHide.gameObject.SetActive(false);
 
-        animator.Play("FadeOut_Animation");
+        animator.SetTrigger("FadeOut_Animation");
 
         yield return new WaitForSeconds(1f);
 
