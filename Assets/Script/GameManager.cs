@@ -26,12 +26,12 @@ public class GameManager: MonoBehaviour
     {
 
         Time.timeScale = 1f;
-        StartCoroutine(FadeIn());
+       StartCoroutine(FadeIn());
 
-        if (SceneManager.GetActiveScene().name == "Prova_Bancone")
-        {
+        
+        
             StartCoroutine(PlaySequence());
-        }
+        
             
     }
     IEnumerator FadeIn()
@@ -62,20 +62,20 @@ public class GameManager: MonoBehaviour
     IEnumerator PlayBubbleAnimation()
     {
         bubbleAnimator.gameObject.SetActive(true); // attiva la nuvola se è disattivata
-        bubbleAnimator.SetTrigger("");
+        
         yield return new WaitForSeconds(1f); // sostituisci con la durata reale dell’animazione
     }
 
     IEnumerator PlayButtonAnimation()
     {
         buttonAnimator.gameObject.SetActive(true);
-        buttonAnimator.SetTrigger("");
+        
         yield return new WaitForSeconds(0f);
     }
     IEnumerator PlayArrowAnimation()
     {
         buttonAnimator.gameObject.SetActive(true);
-        buttonAnimator.SetTrigger("");
+        
         yield return new WaitForSeconds(0f);
     }
     public void OnButtonClicked()
