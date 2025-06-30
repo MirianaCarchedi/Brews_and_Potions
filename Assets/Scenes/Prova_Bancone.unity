@@ -168,28 +168,28 @@ MonoBehaviour:
   - tag1: Mandrake
     tag2: Verbena
     resultPrefab: {fileID: 2756653569893400813, guid: 600c930bed537e041b792b9fc6b6493f, type: 3}
-    previewSprite: {fileID: 0}
-    postMiniGameSprite: {fileID: 0}
+    previewSprite: {fileID: 21300000, guid: c1df3cae053ea7f4f9d488824b9dc4fb, type: 3}
+    postMiniGameSprite: {fileID: 21300000, guid: 554e8c0a196c05848b94a3623e731be0, type: 3}
   - tag1: Artemisia
     tag2: Mandrake
     resultPrefab: {fileID: 5808825466004802737, guid: 7574780af5343434bb28c8d92df89df4, type: 3}
-    previewSprite: {fileID: 0}
-    postMiniGameSprite: {fileID: 0}
+    previewSprite: {fileID: 21300000, guid: 5a7e6e17c3b161d468492cac48833bce, type: 3}
+    postMiniGameSprite: {fileID: 21300000, guid: 691a6568a67e2664e8c13c203e376c05, type: 3}
   - tag1: Artemisia
     tag2: Verbena
     resultPrefab: {fileID: 4060739805008917401, guid: c6618f3e51910274689b371a38e7a9ba, type: 3}
-    previewSprite: {fileID: 0}
-    postMiniGameSprite: {fileID: 0}
+    previewSprite: {fileID: 21300000, guid: ab255750e737b0f4099d924bcfdba5f6, type: 3}
+    postMiniGameSprite: {fileID: 21300000, guid: 499f307ef44ca8d4fb685753e4f52443, type: 3}
   - tag1: Mandrake
     tag2: Belladonna
     resultPrefab: {fileID: 5241335496872920807, guid: 199c22147659cf64992d527dae868451, type: 3}
-    previewSprite: {fileID: 0}
-    postMiniGameSprite: {fileID: 0}
+    previewSprite: {fileID: 21300000, guid: 50313e98afa0d5249801f224452a4f18, type: 3}
+    postMiniGameSprite: {fileID: 21300000, guid: cf89465d9db27eb41a9ce9c88f2ef86b, type: 3}
   - tag1: Belladonna
     tag2: Artemisia
     resultPrefab: {fileID: 8175459346676850368, guid: 3e6f72cec2ac6dd41a435336c755942e, type: 3}
-    previewSprite: {fileID: 0}
-    postMiniGameSprite: {fileID: 0}
+    previewSprite: {fileID: 21300000, guid: 3d05ab45ed7b38b4194cdf740e0410be, type: 3}
+    postMiniGameSprite: {fileID: 21300000, guid: c035f4b4c7db5ad499d68e3279c0d3eb, type: 3}
 --- !u!4 &12949367
 Transform:
   m_ObjectHideFlags: 0
@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
