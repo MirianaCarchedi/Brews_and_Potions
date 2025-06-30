@@ -18,6 +18,10 @@ public class ItemCombiner : MonoBehaviour
 
     public MiniGameController miniGameController; // da assegnare nell'Inspector
 
+    [Header("Immagine preview")]
+    public Image resultPreviewImage;
+
+
     [System.Serializable]
     public class CombinationData
     {
@@ -25,11 +29,15 @@ public class ItemCombiner : MonoBehaviour
         public string tag2;
 
         public GameObject resultPrefab;
+
+        public Sprite previewSprite;         // sprite prima del minigioco
+        public Sprite postMiniGameSprite;    // sprite dopo il minigioco
     }
 
     [Header("Combinazioni possibili")]
     public List<CombinationData> combinations = new List<CombinationData>();
 
+    private CombinationData currentCombination = null;
 
     private void Update()
     {
@@ -39,7 +47,16 @@ public class ItemCombiner : MonoBehaviour
             resultSlot.childCount == 0;
 
         combineButton.interactable = readyToCombine;
+
+        // Se il risultato è stato rimosso dallo slot e non siamo in minigioco
+        if (currentCombination != null && resultSlot.childCount == 0 && !miniGameController.IsPlaying && resultPreviewImage != null)
+        {
+            // Imposta alpha a 0 perché slot vuoto e minigioco finito
+            SetImageAlpha(resultPreviewImage, 0f);
+            currentCombination = null;
+        }
     }
+
 
     public void Combine()
     {
@@ -59,10 +76,22 @@ public class ItemCombiner : MonoBehaviour
 
             if (match)
             {
-                //  Avvia minigioco prima di creare la pozione
+                currentCombination = combo;
+
+                if (resultPreviewImage != null && combo.previewSprite != null)
+                {
+                    resultPreviewImage.sprite = combo.previewSprite;
+                    SetImageAlpha(resultPreviewImage, 1f);  // Rendi visibile
+                }
+
                 miniGameController.StartMiniGame(() =>
                 {
-                    //  Callback quando completato → crea la pozione
+                    if (resultPreviewImage != null && combo.postMiniGameSprite != null)
+                    {
+                        resultPreviewImage.sprite = combo.postMiniGameSprite;
+                        SetImageAlpha(resultPreviewImage, 1f); // Assicura visibilità anche qui
+                    }
+
                     GameObject newItem = Instantiate(combo.resultPrefab);
                     newItem.transform.SetParent(resultSlot, false);
 
@@ -81,4 +110,11 @@ public class ItemCombiner : MonoBehaviour
         Debug.Log("Nessuna combinazione valida trovata per: " + tagA + " + " + tagB);
     }
 
+    private void SetImageAlpha(Image img, float alpha)
+    {
+        Color c = img.color;
+        c.a = alpha;
+        img.color = c;
+    }
 }
+

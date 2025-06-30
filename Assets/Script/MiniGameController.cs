@@ -11,7 +11,10 @@ public class MiniGameController : MonoBehaviour
 
     private Vector3 startPosition;
     private Action onSuccess;
-    private bool isPlaying = false;
+    public bool isPlaying = false;
+    public bool IsPlaying => isPlaying;
+
+
 
     public void StartMiniGame(Action onComplete)
     {
@@ -19,14 +22,12 @@ public class MiniGameController : MonoBehaviour
         isPlaying = true;
 
         startPosition = draggableImage.localPosition;
-       // draggableImage.gameObject.SetActive(true); //  Attiva immagine solo nel minigioco
         gameObject.SetActive(true);
     }
 
     public void EndMiniGame()
     {
         isPlaying = false;
-       // draggableImage.gameObject.SetActive(false); //  Nasconde l'immagine al termine
         gameObject.SetActive(false);
         onSuccess?.Invoke();
     }
@@ -46,8 +47,8 @@ public class MiniGameController : MonoBehaviour
             );
 
             Vector3 newPos = draggableImage.localPosition;
-            newPos.x = Mathf.Clamp(mousePos.x, minX, maxX); //  Solo movimento su X
-            newPos.y = startPosition.y; //  Fissa la Y
+            newPos.x = Mathf.Clamp(mousePos.x, minX, maxX); // Solo movimento su X
+            newPos.y = startPosition.y; // Fissa la Y
             draggableImage.localPosition = newPos;
         }
 
@@ -58,4 +59,3 @@ public class MiniGameController : MonoBehaviour
         }
     }
 }
-

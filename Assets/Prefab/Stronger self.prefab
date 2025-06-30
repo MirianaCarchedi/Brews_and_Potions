@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4331118320107487533}
   m_Layer: 5
   m_Name: Stronger self
-  m_TagString: Untagged
+  m_TagString: StrongerSelf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

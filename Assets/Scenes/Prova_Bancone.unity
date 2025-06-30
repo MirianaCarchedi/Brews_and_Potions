@@ -158,25 +158,38 @@ MonoBehaviour:
   resultSlot: {fileID: 36307648}
   combineButton: {fileID: 2049465259}
   miniGameController: {fileID: 1382762790}
+  resultPreviewImage: {fileID: 1066293831}
   combinations:
   - tag1: Belladonna
     tag2: Verbena
     resultPrefab: {fileID: 6560658413651183328, guid: 8ffa786d96392bb439261c9dd12fdfc1, type: 3}
+    previewSprite: {fileID: 21300000, guid: 50313e98afa0d5249801f224452a4f18, type: 3}
+    postMiniGameSprite: {fileID: 21300000, guid: cf89465d9db27eb41a9ce9c88f2ef86b, type: 3}
   - tag1: Mandrake
     tag2: Verbena
     resultPrefab: {fileID: 2756653569893400813, guid: 600c930bed537e041b792b9fc6b6493f, type: 3}
+    previewSprite: {fileID: 0}
+    postMiniGameSprite: {fileID: 0}
   - tag1: Artemisia
     tag2: Mandrake
     resultPrefab: {fileID: 5808825466004802737, guid: 7574780af5343434bb28c8d92df89df4, type: 3}
+    previewSprite: {fileID: 0}
+    postMiniGameSprite: {fileID: 0}
   - tag1: Artemisia
     tag2: Verbena
     resultPrefab: {fileID: 4060739805008917401, guid: c6618f3e51910274689b371a38e7a9ba, type: 3}
+    previewSprite: {fileID: 0}
+    postMiniGameSprite: {fileID: 0}
   - tag1: Mandrake
     tag2: Belladonna
     resultPrefab: {fileID: 5241335496872920807, guid: 199c22147659cf64992d527dae868451, type: 3}
+    previewSprite: {fileID: 0}
+    postMiniGameSprite: {fileID: 0}
   - tag1: Belladonna
     tag2: Artemisia
     resultPrefab: {fileID: 8175459346676850368, guid: 3e6f72cec2ac6dd41a435336c755942e, type: 3}
+    previewSprite: {fileID: 0}
+    postMiniGameSprite: {fileID: 0}
 --- !u!4 &12949367
 Transform:
   m_ObjectHideFlags: 0
@@ -1178,9 +1191,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 64738841cb2170f4f84a34d9e14c3320, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cf2c6edc557919943906053b3ca4a6de, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -2700,14 +2713,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c035f4b4c7db5ad499d68e3279c0d3eb, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3612,9 +3625,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   draggableImage: {fileID: 1734389400}
-  successThreshold: 800
+  successThreshold: 50
   minX: -200
   maxX: 200
+  isPlaying: 0
 --- !u!4 &1382762791
 Transform:
   m_ObjectHideFlags: 0
@@ -4717,7 +4731,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b40c37ccac511954793e9ad85bb42344, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4748,7 +4762,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 0
-  m_fontStyle: 2
+  m_fontStyle: 3
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -4781,7 +4795,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: -30.000015, z: -193.0513, w: 26.666637}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1783012174
@@ -5462,7 +5476,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 737.0801, y: -192.49}
+  m_AnchoredPosition: {x: 737.0801, y: -209}
   m_SizeDelta: {x: 358.7394, y: 284.974}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &2039112360
@@ -5574,9 +5588,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 64738841cb2170f4f84a34d9e14c3320, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cf2c6edc557919943906053b3ca4a6de, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

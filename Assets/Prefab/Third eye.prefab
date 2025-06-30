@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5596507267835870118}
   m_Layer: 5
   m_Name: Third eye
-  m_TagString: Untagged
+  m_TagString: ThirdEye
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
