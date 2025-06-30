@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 106026481}
   m_Layer: 5
   m_Name: Old_Man
-  m_TagString: Untagged
+  m_TagString: Character1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.32156864, g: 0.30588236, b: 0.19215688, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1568,7 +1568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &715317177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2524,7 +2524,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 751, y: -100}
+  m_AnchoredPosition: {x: 769, y: -82}
   m_SizeDelta: {x: 110.4756, y: 96.5192}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1015129106
@@ -2540,7 +2540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.27450982, g: 0.28627452, b: 0.1764706, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2595,7 +2595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1048897263
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3380,7 +3380,7 @@ GameObject:
   - component: {fileID: 1233100699}
   m_Layer: 5
   m_Name: Student
-  m_TagString: Untagged
+  m_TagString: Character2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3395,7 +3395,7 @@ Animator:
   m_GameObject: {fileID: 1233100698}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9a78d7bd29df1944b9bb83e5acc026d5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5211,7 +5211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb57b9dd8fb38f4eb71a8459696beee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterAnimator: {fileID: 106026481}
   bubbleAnimator: {fileID: 1072520865}
   fadeOut_Animator: {fileID: 2007267689}
   typingEffect: {fileID: 1901395637}
@@ -5219,7 +5218,9 @@ MonoBehaviour:
   messageToDisplay: Poor me, I have searched far and wide for a cure to my pain.
     This is my last hope.
   slot: {fileID: 283258680}
-  requiredTag: HolyStrenght
+  requiredTagCharacter1: HolyStrenght
+  requiredTagCharacter2: MagicPower
+  requiredTagCharacter3: SpeedBoost
   finalMessage: Thank you very much, you helped me and my pain got better. I was
     desperate but now I have found the strength to continue living.
   characterExitAnimator: {fileID: 106026481}
@@ -5827,7 +5828,7 @@ GameObject:
   - component: {fileID: 2076874537}
   m_Layer: 5
   m_Name: Lady
-  m_TagString: Untagged
+  m_TagString: Character3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5861,7 +5862,7 @@ Animator:
   m_GameObject: {fileID: 2076874535}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 34125829b0094b54b939870efe212cf9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
