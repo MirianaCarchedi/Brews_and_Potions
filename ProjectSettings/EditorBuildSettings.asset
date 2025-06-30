@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 91895a9cefb85c149a43ba32a516d9d2
   - enabled: 1
-    path: Assets/Scenes/Prova_Bancone.unity
+    path: Assets/Scenes/Bancone_Laboratorio.unity
     guid: da83d30229e90fb4285b20a6262c9a81
   - enabled: 1
     path: Assets/Scenes/Prova_Laboratorio.unity
