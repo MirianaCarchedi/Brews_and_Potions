@@ -1,12 +1,15 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using System;
 
 public class MiniGameController : MonoBehaviour
 {
     public RectTransform draggableImage;
-    public RectTransform targetArea;
-    public float successThreshold = 50f;
+    public float successThreshold = 200f;
+    public float minX = -200f;
+    public float maxX = 200f;
+
+    private Vector3 startPosition;
     private Action onSuccess;
     private bool isPlaying = false;
 
@@ -14,12 +17,16 @@ public class MiniGameController : MonoBehaviour
     {
         onSuccess = onComplete;
         isPlaying = true;
-        gameObject.SetActive(true); // attiva il canvas o pannello del minigioco
+
+        startPosition = draggableImage.localPosition;
+       // draggableImage.gameObject.SetActive(true); //  Attiva immagine solo nel minigioco
+        gameObject.SetActive(true);
     }
 
     public void EndMiniGame()
     {
         isPlaying = false;
+       // draggableImage.gameObject.SetActive(false); //  Nasconde l'immagine al termine
         gameObject.SetActive(false);
         onSuccess?.Invoke();
     }
@@ -28,7 +35,6 @@ public class MiniGameController : MonoBehaviour
     {
         if (!isPlaying) return;
 
-        // Input drag semplice orizzontale
         if (Input.GetMouseButton(0))
         {
             Vector2 mousePos;
@@ -40,15 +46,16 @@ public class MiniGameController : MonoBehaviour
             );
 
             Vector3 newPos = draggableImage.localPosition;
-            newPos.x = mousePos.x; // Solo asse X
+            newPos.x = Mathf.Clamp(mousePos.x, minX, maxX); //  Solo movimento su X
+            newPos.y = startPosition.y; //  Fissa la Y
             draggableImage.localPosition = newPos;
         }
 
-        // Controlla se è nella zona target
-        float distance = Mathf.Abs(draggableImage.localPosition.x - targetArea.localPosition.x);
-        if (distance <= successThreshold)
+        float distanceMoved = Mathf.Abs(draggableImage.localPosition.x - startPosition.x);
+        if (distanceMoved >= successThreshold)
         {
             EndMiniGame();
         }
     }
 }
+
