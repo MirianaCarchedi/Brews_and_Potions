@@ -16,6 +16,8 @@ public class ItemCombiner : MonoBehaviour
     [Header("Bottone di combinazione")]
     public Button combineButton;
 
+    public MiniGameController miniGameController; // da assegnare nell'Inspector
+
     [System.Serializable]
     public class CombinationData
     {
@@ -52,27 +54,25 @@ public class ItemCombiner : MonoBehaviour
 
         foreach (var combo in combinations)
         {
-            bool match =
-                (combo.tag1 == tagA && combo.tag2 == tagB) ||
-                (combo.tag1 == tagB && combo.tag2 == tagA);
+            bool match = (combo.tag1 == tagA && combo.tag2 == tagB) ||
+                         (combo.tag1 == tagB && combo.tag2 == tagA);
 
             if (match)
             {
-                // Rimuove oggetti originali
-                // Destroy(objA);
-                //Destroy(objB);
+                //  Avvia minigioco prima di creare la pozione
+                miniGameController.StartMiniGame(() =>
+                {
+                    //  Callback quando completato → crea la pozione
+                    GameObject newItem = Instantiate(combo.resultPrefab);
+                    newItem.transform.SetParent(resultSlot, false);
 
-                //  Crea solo UNA volta il nuovo oggetto combinato
-
-                GameObject newItem = Instantiate(combo.resultPrefab);
-                newItem.transform.SetParent(resultSlot, false);
-
-                RectTransform rt = newItem.GetComponent<RectTransform>();
-                rt.anchorMin = new Vector2(0.5f, 0.5f);
-                rt.anchorMax = new Vector2(0.5f, 0.5f);
-                rt.pivot = new Vector2(0.5f, 0.5f);
-                rt.anchoredPosition = Vector2.zero;
-                rt.localScale = Vector3.one;
+                    RectTransform rt = newItem.GetComponent<RectTransform>();
+                    rt.anchorMin = new Vector2(0.5f, 0.5f);
+                    rt.anchorMax = new Vector2(0.5f, 0.5f);
+                    rt.pivot = new Vector2(0.5f, 0.5f);
+                    rt.anchoredPosition = Vector2.zero;
+                    rt.localScale = Vector3.one;
+                });
 
                 return;
             }
@@ -80,4 +80,5 @@ public class ItemCombiner : MonoBehaviour
 
         Debug.Log("Nessuna combinazione valida trovata per: " + tagA + " + " + tagB);
     }
+
 }
