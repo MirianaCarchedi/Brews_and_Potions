@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -39,8 +38,13 @@ public class GameManager : MonoBehaviour
 
     public Animator characterExitAnimator;      // Animator del personaggio che va via
     public GameObject nextCharacter;            // Il personaggio da attivare dopo
-    public GameObject nextCharacter2;  // Il terzo personaggio da attivare dopo il secondo
+    public GameObject nextCharacter2;           // Il terzo personaggio da attivare dopo il secondo
     public GameObject currentCharacter;         // Il personaggio attuale
+
+    private int currentStage = 0;                // Stage corrente (0,1,2)
+    private bool waitingForNextClick = false;    // Se si aspetta il click per passare al prossimo personaggio
+
+    public string nextSceneName;  // Nome della scena da caricare dopo il terzo personaggio
 
     void Start()
     {
@@ -57,12 +61,7 @@ public class GameManager : MonoBehaviour
                 Animator currentAnimator = currentCharacter.GetComponent<Animator>();
                 if (currentAnimator != null)
                 {
-                    if (currentCharacter.CompareTag("Character1"))
-                        StartCoroutine(PlaySequenceCharacter1(currentAnimator));
-                    else if (currentCharacter.CompareTag("Character2"))
-                        StartCoroutine(PlaySequenceCharacter2(currentAnimator));
-                    else if (currentCharacter.CompareTag("Character3"))
-                        StartCoroutine(PlaySequenceCharacter3(currentAnimator));
+                    StartCoroutine(PlaySequenceForCurrentCharacter(currentAnimator));
                 }
             }
             hasStarted = true;
@@ -93,159 +92,129 @@ public class GameManager : MonoBehaviour
         sfondoNero.gameObject.SetActive(false);
     }
 
-    IEnumerator PlaySequenceCharacter1(Animator characterAnim)
+    IEnumerator PlaySequenceForCurrentCharacter(Animator characterAnim)
     {
         yield return new WaitForSeconds(1f);
-        characterAnim.Play("Mario_Animation", 0);
+
+        if (currentCharacter.CompareTag("Character1"))
+            characterAnim.Play("Mario_Animation", 0);
+        else if (currentCharacter.CompareTag("Character2"))
+            characterAnim.Play("Student_Animation", 0);
+        else if (currentCharacter.CompareTag("Character3"))
+            characterAnim.Play("Lady_Animation", 0);
+
         yield return new WaitForSeconds(2f);
 
         bubbleAnimator.gameObject.SetActive(true);
-        characterAnim.Play("Mario_StandBy", 0);
+
+        if (currentCharacter.CompareTag("Character1"))
+            characterAnim.Play("Mario_StandBy", 0);
+        else if (currentCharacter.CompareTag("Character2"))
+            characterAnim.Play("Student_StandBy", 0);
+        else if (currentCharacter.CompareTag("Character3"))
+            characterAnim.Play("Lady_StandBy", 0);
+
         yield return new WaitForSeconds(1f);
 
-        typingEffect.StartTyping(messageCharacter1);
-        yield return new WaitForSeconds(1f);
+        // Messaggio iniziale
+        typingEffect.StartTyping(GetInitialMessageForCurrentCharacter());
+        yield return null;
     }
-
-    IEnumerator PlaySequenceCharacter2(Animator characterAnim)
-    {
-        yield return new WaitForSeconds(1f);
-        characterAnim.Play("Student_Animation", 0);
-        yield return new WaitForSeconds(2f);
-
-        bubbleAnimator.gameObject.SetActive(true);
-        characterAnim.Play("Student_StandBy", 0);
-        yield return new WaitForSeconds(1f);
-
-        typingEffect.StartTyping(messageCharacter2);
-        yield return new WaitForSeconds(1f);
-    }
-
-    IEnumerator PlaySequenceCharacter3(Animator characterAnim)
-    {
-        yield return new WaitForSeconds(1f);
-        characterAnim.Play("Lady_Animation", 0);
-        yield return new WaitForSeconds(2f);
-
-        bubbleAnimator.gameObject.SetActive(true);
-        characterAnim.Play("Lady_StandBy", 0);
-        yield return new WaitForSeconds(1f);
-
-        typingEffect.StartTyping(messageCharacter3);
-        yield return new WaitForSeconds(1f);
-    }
-
 
     public void OnButtonClicked()
     {
-        if (slot.transform.childCount > 0)
+        if (!waitingForNextClick)
         {
-            GameObject droppedObject = slot.transform.GetChild(0).gameObject;
-
-            string requiredTag = "";
-            string finalMessage = "";
-            string negativeMessage = "";
-
-            if (currentCharacter.CompareTag("Character1"))
+            // Primo click: verifica pozione, distruggi l'oggetto nello slot, mostra messaggio finale o negativo, poi aspetta il prossimo click
+            if (slot.transform.childCount > 0)
             {
-                requiredTag = requiredTagCharacter1;
-                finalMessage = finalMessageCharacter1;
-                negativeMessage = negativeMessageCharacter1;
-            }
-            else if (currentCharacter.CompareTag("Character2"))
-            {
-                requiredTag = requiredTagCharacter2;
-                finalMessage = finalMessageCharacter2;
-                negativeMessage = negativeMessageCharacter2;
-            }
-            else if (currentCharacter.CompareTag("Character3"))
-            {
-                requiredTag = requiredTagCharacter3;
-                finalMessage = finalMessageCharacter3;
-                negativeMessage = negativeMessageCharacter3;
-            }
+                GameObject droppedObject = slot.transform.GetChild(0).gameObject;
 
-            bool isCorrect = droppedObject.CompareTag(requiredTag);
+                // Distruggi la pozione appena cliccato
+                Destroy(droppedObject);
 
-            if (isCorrect)
-            {
-                StartCoroutine(HandleDropSequence(finalMessage, true));
+                string requiredTag = GetRequiredTagForCurrentCharacter();
+                string messageToShow;
+                bool isCorrect = droppedObject.CompareTag(requiredTag);
+
+                if (isCorrect)
+                    messageToShow = GetFinalMessageForCurrentCharacter();
+                else
+                    messageToShow = GetNegativeMessageForCurrentCharacter();
+
+                typingEffect.StartTyping(messageToShow);
+                waitingForNextClick = true;
             }
             else
             {
-                typingEffect.StartTyping(negativeMessage);
-                StartCoroutine(HandleDropSequence(negativeMessage, false));
+                Debug.Log("Nessun oggetto presente nello slot.");
             }
         }
         else
         {
-            Debug.Log("Nessun oggetto presente nello slot.");
+            // Secondo click: fai uscire il personaggio e passa al prossimo
+            StartCoroutine(ExitCurrentAndAdvance());
+            waitingForNextClick = false;
         }
     }
 
-    public string nextSceneName;  // Nome della scena da caricare dopo il terzo personaggio
 
-    IEnumerator HandleDropSequence(string message, bool isCorrect, int stage = 0)
+    IEnumerator ExitCurrentAndAdvance()
     {
-        typingEffect.StartTyping(message);
-
-        yield return new WaitForSeconds(8f);
-
         if (characterExitAnimator != null)
         {
-            characterExitAnimator.SetTrigger("Exit");
+            // Partendo dall'animazione di uscita del personaggio corrente (diversa per ciascuno)
+            if (currentCharacter.CompareTag("Character1"))
+                characterExitAnimator.Play("Mario_Exit", 0);
+            else if (currentCharacter.CompareTag("Character2"))
+                characterExitAnimator.Play("Student_Exit", 0);
+            else if (currentCharacter.CompareTag("Character3"))
+                characterExitAnimator.Play("Lady_Exit", 0);
+
             yield return new WaitForSeconds(2.5f);
         }
 
         if (currentCharacter != null)
             currentCharacter.SetActive(false);
 
-        if (stage == 0 && nextCharacter != null)
+        currentStage++;
+
+        if (currentStage == 1 && nextCharacter != null)
         {
-            nextCharacter.SetActive(true);
             currentCharacter = nextCharacter;
+            currentCharacter.SetActive(true);
             characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
-            Animator nextCharAnimator = currentCharacter.GetComponent<Animator>();
-            if (nextCharAnimator != null)
-            {
-                if (currentCharacter.CompareTag("Character1"))
-                    yield return StartCoroutine(PlaySequenceCharacter1(nextCharAnimator));
-                else if (currentCharacter.CompareTag("Character2"))
-                    yield return StartCoroutine(PlaySequenceCharacter2(nextCharAnimator));
-                else if (currentCharacter.CompareTag("Character3"))
-                    yield return StartCoroutine(PlaySequenceCharacter3(nextCharAnimator));
-            }
-
-            yield return StartCoroutine(HandleDropSequence(GetFinalMessageForCurrentCharacter(), true, 1));
+            Animator nextAnim = currentCharacter.GetComponent<Animator>();
+            if (nextAnim != null)
+                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
         }
-        else if (stage == 1 && nextCharacter2 != null)
+        else if (currentStage == 2 && nextCharacter2 != null)
         {
-            nextCharacter2.SetActive(true);
             currentCharacter = nextCharacter2;
+            currentCharacter.SetActive(true);
             characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
-            Animator nextCharAnimator = currentCharacter.GetComponent<Animator>();
-            if (nextCharAnimator != null)
-            {
-                if (currentCharacter.CompareTag("Character1"))
-                    yield return StartCoroutine(PlaySequenceCharacter1(nextCharAnimator));
-                else if (currentCharacter.CompareTag("Character2"))
-                    yield return StartCoroutine(PlaySequenceCharacter2(nextCharAnimator));
-                else if (currentCharacter.CompareTag("Character3"))
-                    yield return StartCoroutine(PlaySequenceCharacter3(nextCharAnimator));
-            }
-
-            // Dopo il terzo personaggio, stage 2 per uscita + cambio scena
-            yield return StartCoroutine(HandleDropSequence(GetFinalMessageForCurrentCharacter(), true, 2));
+            Animator nextAnim = currentCharacter.GetComponent<Animator>();
+            if (nextAnim != null)
+                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
         }
-        else if (stage == 2)
+        else if (currentStage >= 3)
         {
-            // Uscita finale e cambio scena
+            // Fine sequenza: uscita finale e cambio scena
             if (characterExitAnimator != null)
             {
-                characterExitAnimator.SetTrigger("Exit");
-                yield return new WaitForSeconds(2f);
+                if (currentCharacter != null)
+                {
+                    if (currentCharacter.CompareTag("Character1"))
+                        characterExitAnimator.Play("Mario_Exit", 0);
+                    else if (currentCharacter.CompareTag("Character2"))
+                        characterExitAnimator.Play("Student_Exit", 0);
+                    else if (currentCharacter.CompareTag("Character3"))
+                        characterExitAnimator.Play("Lady_Exit", 0);
+
+                    yield return new WaitForSeconds(2f);
+                }
             }
 
             if (currentCharacter != null)
@@ -258,9 +227,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Helper per prendere i messaggi e tag in base al personaggio attuale
+    string GetRequiredTagForCurrentCharacter()
+    {
+        if (currentCharacter.CompareTag("Character1"))
+            return requiredTagCharacter1;
+        else if (currentCharacter.CompareTag("Character2"))
+            return requiredTagCharacter2;
+        else if (currentCharacter.CompareTag("Character3"))
+            return requiredTagCharacter3;
+        return "";
+    }
 
+    string GetInitialMessageForCurrentCharacter()
+    {
+        if (currentCharacter.CompareTag("Character1"))
+            return messageCharacter1;
+        else if (currentCharacter.CompareTag("Character2"))
+            return messageCharacter2;
+        else if (currentCharacter.CompareTag("Character3"))
+            return messageCharacter3;
+        return "";
+    }
 
-    // Funzione helper per prendere il messaggio finale corretto del personaggio attuale
     string GetFinalMessageForCurrentCharacter()
     {
         if (currentCharacter.CompareTag("Character1"))
@@ -272,6 +261,19 @@ public class GameManager : MonoBehaviour
         return "";
     }
 
+    string GetNegativeMessageForCurrentCharacter()
+    {
+        if (currentCharacter.CompareTag("Character1"))
+            return negativeMessageCharacter1;
+        else if (currentCharacter.CompareTag("Character2"))
+            return negativeMessageCharacter2;
+        else if (currentCharacter.CompareTag("Character3"))
+            return negativeMessageCharacter3;
+        return "";
+    }
 }
+
+
+
 
 

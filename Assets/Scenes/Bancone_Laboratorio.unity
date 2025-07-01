@@ -360,7 +360,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1917, y: -286}
+  m_AnchoredPosition: {x: -1585, y: -286}
   m_SizeDelta: {x: 712.2813, y: 794.1935}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &106026479
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 616078092}
   - component: {fileID: 616078091}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Piedistallo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1969,7 +1969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &715317177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2997,7 +2997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1048897263
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3459,7 +3459,7 @@ GameObject:
   - component: {fileID: 1140178871}
   - component: {fileID: 1140178870}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Campanello
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3937,7 +3937,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1197.2, y: -148}
+  m_AnchoredPosition: {x: -260, y: -286}
   m_SizeDelta: {x: 712.2813, y: 794.1935}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1353811308
@@ -4307,7 +4307,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000015259, y: -0.0000076294}
+  m_AnchoredPosition: {x: 0, y: 0.000015258789}
   m_SizeDelta: {x: 170, y: 170}
   m_Pivot: {x: 0.5, y: 0.49999997}
 --- !u!225 &1420271895
@@ -5550,6 +5550,7 @@ GameObject:
   - component: {fileID: 1848223157}
   - component: {fileID: 1848223156}
   - component: {fileID: 1848223155}
+  - component: {fileID: 1848223158}
   m_Layer: 5
   m_Name: Cestino
   m_TagString: Untagged
@@ -5626,6 +5627,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848223153}
   m_CullTransparentMesh: 1
+--- !u!114 &1848223158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848223153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abddf3074737a9345af9f7d48f8cc131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedTags:
+  - Artemisia
+  - Belladonna
+  - Verbena
+  - Mandrake
 --- !u!1 &1888557430
 GameObject:
   m_ObjectHideFlags: 0
@@ -5812,7 +5830,7 @@ MonoBehaviour:
   nextCharacter: {fileID: 1233100698}
   nextCharacter2: {fileID: 2076874535}
   currentCharacter: {fileID: 106026477}
-  nextSceneName: 
+  nextSceneName: Final_Scene
 --- !u!114 &1901395639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6436,7 +6454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1197.2, y: -156}
+  m_AnchoredPosition: {x: -260, y: -286}
   m_SizeDelta: {x: 712.2813, y: 794.1935}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &2076874537
