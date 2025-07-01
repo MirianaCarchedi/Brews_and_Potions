@@ -5779,7 +5779,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &715317180
 RectTransform:
@@ -14053,7 +14053,7 @@ MonoBehaviour:
   bubbleAnimator: {fileID: 1072520865}
   fadeOut_Animator: {fileID: 671551545}
   typingEffect: {fileID: 1901395637}
-  sfondoNero: {fileID: 671551546}
+  sfondoNeroCanvas: {fileID: 2100058226}
   slot: {fileID: 283258680}
   objectForCharacter2: {fileID: 5454417663519144140, guid: 4b91a59dab6e93c44839cec21047551f, type: 3}
   objectForCharacter3: {fileID: 4188056312488240772, guid: 871b380af8e8db34a8eaa082f8fc5627, type: 3}
@@ -14093,9 +14093,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2603c4d8123a104bb7cfa8047c96b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laboratorio: {fileID: 1048897262}
-  bancone: {fileID: 715317176}
-  sfondoNero: {fileID: 671551546}
+  laboratorioCanvas: {fileID: 1048897262}
+  banconeCanvas: {fileID: 715317176}
+  sfondoNeroCanvas: {fileID: 2100058226}
   fadeAnimator: {fileID: 671551545}
 --- !u!114 &1901395640
 MonoBehaviour:
@@ -15806,7 +15806,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_TargetDisplay: 0
 --- !u!1001 &2546118931629706474
 PrefabInstance:

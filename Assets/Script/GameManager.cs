@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public TypingEffect typingEffect;         // Script che gestisce la scrittura
 
-    public Image sfondoNero;
+    public GameObject sfondoNeroCanvas;
 
     private bool hasStarted = false;
 
@@ -77,9 +77,9 @@ public class GameManager : MonoBehaviour
             bubbleAnimator.Update(0f);
         }
 
-        if (sfondoNero != null)
+        if (sfondoNeroCanvas != null)
         {
-            sfondoNero.gameObject.SetActive(true);
+            sfondoNeroCanvas.SetActive(false);
         }
 
         hasStarted = false;
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     {
         fadeOut_Animator.Play("FadeOut_Animation");
         yield return new WaitForSeconds(2f);
-        sfondoNero.gameObject.SetActive(false);
+        sfondoNeroCanvas.SetActive(false);
     }
 
     IEnumerator PlaySequenceForCurrentCharacter(Animator characterAnim)

@@ -4,41 +4,48 @@ using UnityEngine.UI;
 
 public class SceneFader : MonoBehaviour
 {
-    public GameObject laboratorio;
-    public GameObject bancone;
+    public GameObject laboratorioCanvas;
+    public GameObject banconeCanvas;
 
-    public Image sfondoNero;
+    public GameObject sfondoNeroCanvas;  // Canvas che contiene lo sfondo nero e l'animator
     public Animator fadeAnimator;
+
+    private void Start()
+    {
+
+    }
 
     public void FadeToLab()
     {
-        StartCoroutine(FadeAndSwitch(laboratorio, bancone));
+        StartCoroutine(FadeAndSwitch(laboratorioCanvas, banconeCanvas));
     }
 
     public void FadeToBancone()
     {
-        StartCoroutine(FadeAndSwitch(bancone, laboratorio));
+        StartCoroutine(FadeAndSwitch(banconeCanvas, laboratorioCanvas));
     }
 
-    IEnumerator FadeAndSwitch(GameObject canvasToShow, GameObject canvasToHide)
+    private IEnumerator FadeAndSwitch(GameObject canvasToShow, GameObject canvasToHide)
     {
-        sfondoNero.gameObject.SetActive(true);
+        sfondoNeroCanvas.SetActive(true);
 
-        // Avvia il fade out
-        fadeAnimator.SetTrigger("FadeIn_Animation");
+        // Avvia animazione fade-in (fade to nero)
+        fadeAnimator.Play("FadeIn_Animation");
 
-        yield return new WaitForSeconds(2f); // attesa del fade out
+        // Aspetta che finisca l'animazione (es. 2 secondi)
+        yield return new WaitForSeconds(2f);
 
         // Cambia canvas
-        canvasToShow.SetActive(true);
         canvasToHide.SetActive(false);
+        canvasToShow.SetActive(true);
 
-        // Avvia il fade in
-        fadeAnimator.SetTrigger("FadeOut_Animation");
+        // Avvia animazione fade-out (fade da nero a trasparente)
+        fadeAnimator.Play("FadeOut_Animation");
 
-        yield return new WaitForSeconds(2f); // attesa del fade in
+        yield return new WaitForSeconds(2f);
 
-        sfondoNero.gameObject.SetActive(false);
+        sfondoNeroCanvas.SetActive(false);
     }
 }
+
 
