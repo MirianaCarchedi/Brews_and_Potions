@@ -1,63 +1,44 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class SceneFader : MonoBehaviour
 {
-    public Canvas Laboratorio;
-    public Canvas Bancone;
+    public GameObject laboratorio;
+    public GameObject bancone;
 
-    public Image sfondoNeroLab;
-    public Image sfondoNeroBancone;
+    public Image sfondoNero;
+    public Animator fadeAnimator;
 
-    public Animator animatorLab;
-    public Animator animatorBancone;
-
-    public void FadeToSceneLab()
+    public void FadeToLab()
     {
-        StartCoroutine(FadeAndSwitchCanvas(
-            canvasToShow: Laboratorio,
-            canvasToHide: Bancone,
-            fadeImage: sfondoNeroLab,
-            animator: animatorLab
-        ));
+        StartCoroutine(FadeAndSwitch(laboratorio, bancone));
     }
 
-    public void FadeToSceneBancone()
+    public void FadeToBancone()
     {
-        StartCoroutine(FadeAndSwitchCanvas(
-            canvasToShow: Bancone,
-            canvasToHide: Laboratorio,
-            fadeImage: sfondoNeroBancone,
-            animator: animatorBancone
-        ));
+        StartCoroutine(FadeAndSwitch(bancone, laboratorio));
     }
 
-    IEnumerator FadeAndSwitchCanvas(Canvas canvasToShow, Canvas canvasToHide, Image fadeImage, Animator animator)
+    IEnumerator FadeAndSwitch(GameObject canvasToShow, GameObject canvasToHide)
     {
-        //  Attiva solo lo sfondo nero (non il canvas intero)
-        fadeImage.gameObject.SetActive(true);
+        sfondoNero.gameObject.SetActive(true);
 
-        yield return null;
-        //  Ora il GameObject è attivo, quindi puoi riprodurre
-        animator.SetTrigger("FadeIn_Animation");
+        // Avvia il fade out
+        fadeAnimator.SetTrigger("FadeIn_Animation");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f); // attesa del fade out
 
-        // Ora cambia canvas
-        canvasToShow.gameObject.SetActive(true);
-        canvasToHide.gameObject.SetActive(false);
+        // Cambia canvas
+        canvasToShow.SetActive(true);
+        canvasToHide.SetActive(false);
 
-        animator.SetTrigger("FadeOut_Animation");
+        // Avvia il fade in
+        fadeAnimator.SetTrigger("FadeOut_Animation");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f); // attesa del fade in
 
-        fadeImage.gameObject.SetActive(false);
+        sfondoNero.gameObject.SetActive(false);
     }
-
 }
-
 

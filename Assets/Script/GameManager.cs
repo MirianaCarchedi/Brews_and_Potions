@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
     IEnumerator FadeIn()
     {
         fadeOut_Animator.Play("FadeOut_Animation");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         sfondoNero.gameObject.SetActive(false);
     }
 
