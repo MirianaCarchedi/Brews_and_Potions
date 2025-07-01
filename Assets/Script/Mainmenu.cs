@@ -9,7 +9,7 @@ public class Mainmenu : MonoBehaviour
     public void PlayGAme()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadSceneAsync("Prova_Bancone");
+        SceneManager.LoadSceneAsync("Bancone_Laboratorio");
     }
 
     public void QuitGAme()
