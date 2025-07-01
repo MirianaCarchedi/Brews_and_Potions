@@ -1,29 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using UnityEngine.EventSystems;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
     public Transform OriginalParent { get; set; }
-
     [SerializeField] public Canvas canvas;
 
-
+    [Header("Audio")]
+    public AudioSource audioSource;      // Assegna in Inspector o tramite script
+    public AudioClip dragSound;          // Il suono da riprodurre quando si inizia il drag
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-         if (canvas == null)
+
+        if (canvas == null)
             canvas = GetComponentInParent<Canvas>();
 
         if (canvas == null)
-            canvas = FindObjectOfType<Canvas>(); 
-    
+            canvas = FindObjectOfType<Canvas>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -31,6 +29,12 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         OriginalParent = transform.parent;
         transform.SetParent(canvas.transform); // Move to top to prevent being hidden
         canvasGroup.blocksRaycasts = false;
+
+        // Riproduci il suono (se assegnato)
+        if (audioSource != null && dragSound != null)
+        {
+            audioSource.PlayOneShot(dragSound);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -42,7 +46,6 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         canvasGroup.blocksRaycasts = true;
 
-        // If not dropped on a slot, return to original slot
         if (transform.parent == canvas.transform)
         {
             transform.SetParent(OriginalParent, false);
@@ -64,5 +67,4 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         rt.localScale = Vector3.one;
         rt.localPosition = Vector3.zero;
     }
-
 }

@@ -9,15 +9,19 @@ public class DragToSide : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     private RectTransform rectTransform;
     private Vector2 startPosition;
 
+    private AudioSource audioSource;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         startPosition = rectTransform.anchoredPosition;
+        audioSource = GetComponent<AudioSource>(); // Assicurati che ci sia un AudioSource sullo stesso oggetto
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // (opzionale) disattiva altri input se necessario
+        if (audioSource != null && !audioSource.isPlaying)
+            audioSource.Play();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -27,18 +31,18 @@ public class DragToSide : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
+
         float draggedX = rectTransform.anchoredPosition.x - startPosition.x;
 
         if (Mathf.Abs(draggedX) >= dragLimit)
         {
-            // Completato il minigioco
             miniGameController.EndMiniGame();
         }
         else
         {
-            // Ritorna alla posizione iniziale
             rectTransform.anchoredPosition = startPosition;
         }
     }
 }
-

@@ -7,6 +7,9 @@ public class SceneFader : MonoBehaviour
     public GameObject laboratorioCanvas;
     public GameObject banconeCanvas;
 
+    public AudioSource audioSource;   // Riferimento all'AudioSource
+    public AudioClip soundEffect;     // Il suono da riprodurre
+
     public GameObject sfondoNeroCanvas;  // Canvas che contiene lo sfondo nero e l'animator
     public Animator fadeAnimator;
 
@@ -31,6 +34,8 @@ public class SceneFader : MonoBehaviour
 
         // Avvia animazione fade-in (fade to nero)
         fadeAnimator.Play("FadeIn_Animation");
+        audioSource.PlayOneShot(soundEffect);
+
 
         // Aspetta che finisca l'animazione (es. 2 secondi)
         yield return new WaitForSeconds(2f);
@@ -41,6 +46,8 @@ public class SceneFader : MonoBehaviour
 
         // Avvia animazione fade-out (fade da nero a trasparente)
         fadeAnimator.Play("FadeOut_Animation");
+        audioSource.PlayOneShot(soundEffect);
+
 
         yield return new WaitForSeconds(2f);
 

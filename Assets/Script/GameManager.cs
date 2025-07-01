@@ -46,6 +46,10 @@ public class GameManager : MonoBehaviour
 
     public string nextSceneName;  // Nome della scena da caricare dopo il terzo personaggio
 
+    public AudioSource audioSource;   // Riferimento all'AudioSource
+    public AudioClip soundEffect;     // Il suono da riprodurre
+
+
     void Start()
     {
         Time.timeScale = 1f;
@@ -95,7 +99,7 @@ public class GameManager : MonoBehaviour
     IEnumerator PlaySequenceForCurrentCharacter(Animator characterAnim)
     {
         yield return new WaitForSeconds(1f);
-
+        audioSource.PlayOneShot(soundEffect);
         if (currentCharacter.CompareTag("Character1"))
             characterAnim.Play("Mario_Animation", 0);
         else if (currentCharacter.CompareTag("Character2"))
@@ -171,7 +175,7 @@ public class GameManager : MonoBehaviour
             else if (currentCharacter.CompareTag("Character3"))
                 characterExitAnimator.Play("Lady_Exit", 0);
 
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(3f);
         }
 
         if (currentCharacter != null)

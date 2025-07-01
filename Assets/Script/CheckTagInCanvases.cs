@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CheckTagInCanvases : MonoBehaviour
 {
@@ -11,29 +12,36 @@ public class CheckTagInCanvases : MonoBehaviour
 
     public TagChildPair[] tagChildPairs;
 
+    // Tiene traccia dei tag già "trovati" almeno una volta
+    private static HashSet<string> seenTags = new HashSet<string>();
+
     private void OnEnable()
     {
         foreach (var pair in tagChildPairs)
         {
-            // Disattiva il figlio all'inizio
-            if (pair.childToEnable != null)
-                pair.childToEnable.SetActive(false);
+            // Se è già stato visto in passato, attiva direttamente il figlio
+            if (seenTags.Contains(pair.tag))
+            {
+                pair.childToEnable?.SetActive(true);
+                continue;
+            }
 
-            // Trova TUTTI gli oggetti della scena (anche disattivi)
+            // Altrimenti, cerca il tag tra gli oggetti in scena (anche disattivati)
             GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
 
             foreach (GameObject obj in allObjects)
             {
-                // ? Filtra SOLO quelli della scena (esclude prefab negli asset)
                 if (obj.CompareTag(pair.tag) &&
                     obj.hideFlags == HideFlags.None &&
-                    obj.scene.IsValid()) // <-- importante!
+                    obj.scene.IsValid())
                 {
+                    seenTags.Add(pair.tag);
                     pair.childToEnable?.SetActive(true);
-                    break; // trovato, basta
+                    break;
                 }
             }
         }
     }
 }
+
 
