@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -98,8 +98,10 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PlaySequenceForCurrentCharacter(Animator characterAnim)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0f);
         audioSource.PlayOneShot(soundEffect);
+
+        // Avvia animazione principale
         if (currentCharacter.CompareTag("Character1"))
             characterAnim.Play("Mario_Animation", 0);
         else if (currentCharacter.CompareTag("Character2"))
@@ -107,9 +109,20 @@ public class GameManager : MonoBehaviour
         else if (currentCharacter.CompareTag("Character3"))
             characterAnim.Play("Lady_Animation", 0);
 
-        yield return new WaitForSeconds(2f);
+        // Aspetta la durata dell'animazione (es. 2 secondi)
+        yield return new WaitForSeconds(1.5f);
 
+        // Avvia coroutine StandBy
+        StartCoroutine(PlayStandByAnimation(characterAnim));
+
+        // Continua con il resto del flusso (es. abilitare la nuvoletta, scrivere testo)
         bubbleAnimator.gameObject.SetActive(true);
+        typingEffect.StartTyping(GetInitialMessageForCurrentCharacter());
+    }
+
+    IEnumerator PlayStandByAnimation(Animator characterAnim)
+    {
+        yield return new WaitForSeconds(3.5f);
 
         if (currentCharacter.CompareTag("Character1"))
             characterAnim.Play("Mario_StandBy", 0);
@@ -118,12 +131,9 @@ public class GameManager : MonoBehaviour
         else if (currentCharacter.CompareTag("Character3"))
             characterAnim.Play("Lady_StandBy", 0);
 
-        yield return new WaitForSeconds(1f);
-
-        // Messaggio iniziale
-        typingEffect.StartTyping(GetInitialMessageForCurrentCharacter());
-        yield return null;
+        yield return null;  // puoi aggiungere altre logiche se vuoi
     }
+
 
     public void OnButtonClicked()
     {
@@ -134,7 +144,7 @@ public class GameManager : MonoBehaviour
             {
                 GameObject droppedObject = slot.transform.GetChild(0).gameObject;
 
-               
+
                 // Disattiva la pozione e la rimuove dallo slot
                 droppedObject.transform.SetParent(null);
                 droppedObject.SetActive(false);
@@ -297,4 +307,3 @@ public class GameManager : MonoBehaviour
         return "";
     }
 }
-
