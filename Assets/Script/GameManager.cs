@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public Animator fadeOut_Animator;
 
     public TypingEffect typingEffect;         // Script che gestisce la scrittura
+    public TMPro.TextMeshProUGUI textComponent;
+
 
     public GameObject sfondoNeroCanvas;
 
@@ -110,7 +112,7 @@ public class GameManager : MonoBehaviour
             characterAnim.Play("Lady_Animation", 0);
 
         // Aspetta la durata dell'animazione (es. 2 secondi)
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         // Avvia coroutine StandBy
         StartCoroutine(PlayStandByAnimation(characterAnim));
@@ -176,79 +178,81 @@ public class GameManager : MonoBehaviour
     }
 
 
-    IEnumerator ExitCurrentAndAdvance()
+IEnumerator ExitCurrentAndAdvance()
+{
+    if (characterExitAnimator != null)
+    {
+        if (currentCharacter.CompareTag("Character1"))
+            characterExitAnimator.Play("Mario_Exit", 0);
+        else if (currentCharacter.CompareTag("Character2"))
+            characterExitAnimator.Play("Student_Exit", 0);
+        else if (currentCharacter.CompareTag("Character3"))
+            characterExitAnimator.Play("Lady_Exit", 0);
+
+        yield return new WaitForSeconds(3f);
+    }
+
+    if (currentCharacter != null)
+    {
+        currentCharacter.SetActive(false);
+
+        // Cancella il testo nella nuvoletta
+        textComponent.text = "";
+    }
+
+    currentStage++;
+
+    if (currentStage == 1 && nextCharacter != null)
+    {
+        currentCharacter = nextCharacter;
+        currentCharacter.SetActive(true);
+        characterExitAnimator = currentCharacter.GetComponent<Animator>();
+
+        ShowObjectInSlot(objectForCharacter2);
+
+        Animator nextAnim = currentCharacter.GetComponent<Animator>();
+        if (nextAnim != null)
+            yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
+    }
+    else if (currentStage == 2 && nextCharacter2 != null)
+    {
+        currentCharacter = nextCharacter2;
+        currentCharacter.SetActive(true);
+        characterExitAnimator = currentCharacter.GetComponent<Animator>();
+
+        ShowObjectInSlot(objectForCharacter3);
+
+        Animator nextAnim = currentCharacter.GetComponent<Animator>();
+        if (nextAnim != null)
+            yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
+    }
+    else if (currentStage >= 3)
     {
         if (characterExitAnimator != null)
         {
-            // Partendo dall'animazione di uscita del personaggio corrente (diversa per ciascuno)
-            if (currentCharacter.CompareTag("Character1"))
-                characterExitAnimator.Play("Mario_Exit", 0);
-            else if (currentCharacter.CompareTag("Character2"))
-                characterExitAnimator.Play("Student_Exit", 0);
-            else if (currentCharacter.CompareTag("Character3"))
-                characterExitAnimator.Play("Lady_Exit", 0);
+            if (currentCharacter != null)
+            {
+                if (currentCharacter.CompareTag("Character1"))
+                    characterExitAnimator.Play("Mario_Exit", 0);
+                else if (currentCharacter.CompareTag("Character2"))
+                    characterExitAnimator.Play("Student_Exit", 0);
+                else if (currentCharacter.CompareTag("Character3"))
+                    characterExitAnimator.Play("Lady_Exit", 0);
 
-            yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(2f);
+            }
         }
 
         if (currentCharacter != null)
             currentCharacter.SetActive(false);
 
-        currentStage++;
-
-        if (currentStage == 1 && nextCharacter != null)
+        if (!string.IsNullOrEmpty(nextSceneName))
         {
-            currentCharacter = nextCharacter;
-            currentCharacter.SetActive(true);
-            characterExitAnimator = currentCharacter.GetComponent<Animator>();
-
-            // Mostra l'oggetto per Character 2
-            ShowObjectInSlot(objectForCharacter2);
-
-            Animator nextAnim = currentCharacter.GetComponent<Animator>();
-            if (nextAnim != null)
-                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
-        }
-        else if (currentStage == 2 && nextCharacter2 != null)
-        {
-            currentCharacter = nextCharacter2;
-            currentCharacter.SetActive(true);
-            characterExitAnimator = currentCharacter.GetComponent<Animator>();
-
-            // Mostra l'oggetto per Character 3
-            ShowObjectInSlot(objectForCharacter3);
-
-            Animator nextAnim = currentCharacter.GetComponent<Animator>();
-            if (nextAnim != null)
-                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
-        }
-        else if (currentStage >= 3)
-        {
-            // Fine sequenza: uscita finale e cambio scena
-            if (characterExitAnimator != null)
-            {
-                if (currentCharacter != null)
-                {
-                    if (currentCharacter.CompareTag("Character1"))
-                        characterExitAnimator.Play("Mario_Exit", 0);
-                    else if (currentCharacter.CompareTag("Character2"))
-                        characterExitAnimator.Play("Student_Exit", 0);
-                    else if (currentCharacter.CompareTag("Character3"))
-                        characterExitAnimator.Play("Lady_Exit", 0);
-
-                    yield return new WaitForSeconds(2f);
-                }
-            }
-
-            if (currentCharacter != null)
-                currentCharacter.SetActive(false);
-
-            if (!string.IsNullOrEmpty(nextSceneName))
-            {
-                SceneManager.LoadScene(nextSceneName);
-            }
+            SceneManager.LoadScene(nextSceneName);
         }
     }
+}
+
 
     // Metodo helper per mostrare l'oggetto nello slot e attivarlo
     void ShowObjectInSlot(GameObject prefab)

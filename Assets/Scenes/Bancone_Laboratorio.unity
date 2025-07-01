@@ -13325,7 +13325,7 @@ GameObject:
   - component: {fileID: 1783012174}
   - component: {fileID: 1783012173}
   m_Layer: 5
-  m_Name: Testo_OldMan
+  m_Name: Testo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14380,6 +14380,7 @@ MonoBehaviour:
   bubbleAnimator: {fileID: 1072520865}
   fadeOut_Animator: {fileID: 671551545}
   typingEffect: {fileID: 1901395637}
+  textComponent: {fileID: 1783012173}
   sfondoNeroCanvas: {fileID: 2100058226}
   slot: {fileID: 283258680}
   objectForCharacter2: {fileID: 5454417663519144140, guid: 4b91a59dab6e93c44839cec21047551f, type: 3}
@@ -16055,7 +16056,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2100058227
 RectTransform:
   m_ObjectHideFlags: 0
