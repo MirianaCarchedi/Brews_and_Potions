@@ -134,8 +134,11 @@ public class GameManager : MonoBehaviour
             {
                 GameObject droppedObject = slot.transform.GetChild(0).gameObject;
 
-                // Distruggi la pozione appena cliccato
-                Destroy(droppedObject);
+               
+                // Disattiva la pozione e la rimuove dallo slot
+                droppedObject.transform.SetParent(null);
+                droppedObject.SetActive(false);
+
 
                 string requiredTag = GetRequiredTagForCurrentCharacter();
                 string messageToShow;
@@ -257,7 +260,7 @@ public class GameManager : MonoBehaviour
         else if (currentCharacter.CompareTag("Character2"))
             return "LightMind";
         else if (currentCharacter.CompareTag("Character3"))
-            return "OpenHeart";
+            return "OpenHearth";
         return "";
     }
 
