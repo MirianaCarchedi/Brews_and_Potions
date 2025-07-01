@@ -14,12 +14,12 @@ public class GameManager : MonoBehaviour
 
     private bool hasStarted = false;
 
-    public GameObject slot;                     // Lo slot dove avviene il drop
+    public GameObject slot;                   // Lo slot dove avviene il drop
 
-    // Tag richiesti per ogni personaggio
-    public string requiredTagCharacter1 = "HolyStrenght";
-    public string requiredTagCharacter2 = "MagicPower";
-    public string requiredTagCharacter3 = "SpeedBoost";
+    // Nuovi riferimenti diretti ai GameObject da attivare per Character 2 e 3
+    public GameObject objectForCharacter2;
+    public GameObject objectForCharacter3;
+    public Transform slotToShowObject;        // Slot dove mettere questi oggetti
 
     // Messaggi iniziali per ogni personaggio
     public string messageCharacter1;
@@ -185,6 +185,9 @@ public class GameManager : MonoBehaviour
             currentCharacter.SetActive(true);
             characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
+            // Mostra l'oggetto per Character 2
+            ShowObjectInSlot(objectForCharacter2);
+
             Animator nextAnim = currentCharacter.GetComponent<Animator>();
             if (nextAnim != null)
                 yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
@@ -194,6 +197,9 @@ public class GameManager : MonoBehaviour
             currentCharacter = nextCharacter2;
             currentCharacter.SetActive(true);
             characterExitAnimator = currentCharacter.GetComponent<Animator>();
+
+            // Mostra l'oggetto per Character 3
+            ShowObjectInSlot(objectForCharacter3);
 
             Animator nextAnim = currentCharacter.GetComponent<Animator>();
             if (nextAnim != null)
@@ -227,15 +233,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Metodo helper per mostrare l'oggetto nello slot e attivarlo
+    void ShowObjectInSlot(GameObject prefab)
+    {
+        if (prefab != null && slotToShowObject != null)
+        {
+            // Istanzia il prefab nella scena
+            GameObject instance = Instantiate(prefab, slotToShowObject);
+            instance.SetActive(true);
+        }
+    }
+
+
     // Helper per prendere i messaggi e tag in base al personaggio attuale
     string GetRequiredTagForCurrentCharacter()
     {
         if (currentCharacter.CompareTag("Character1"))
-            return requiredTagCharacter1;
+            return "HolyStrenght";
         else if (currentCharacter.CompareTag("Character2"))
-            return requiredTagCharacter2;
+            return "LightMind";
         else if (currentCharacter.CompareTag("Character3"))
-            return requiredTagCharacter3;
+            return "OpenHeart";
         return "";
     }
 
@@ -272,8 +290,4 @@ public class GameManager : MonoBehaviour
         return "";
     }
 }
-
-
-
-
 

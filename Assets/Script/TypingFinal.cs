@@ -6,7 +6,7 @@ public class TypingFinal : MonoBehaviour
 {
     public TextMeshProUGUI text;
     public float delay = 0.05f;
-    public string initialText = "Benvenuto nella scena!"; 
+    public string initialText = ""; 
 
     private void Start()
     {
