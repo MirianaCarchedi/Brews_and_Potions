@@ -14,7 +14,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bancone_Laboratorio.unity
     guid: da83d30229e90fb4285b20a6262c9a81
-  - enabled: 1
-    path: Assets/Scenes/Prova_Laboratorio.unity
-    guid: ab9fb6d1ecb679d4999d13c226a90f8d
   m_configObjects: {}
