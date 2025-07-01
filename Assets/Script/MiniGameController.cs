@@ -23,14 +23,34 @@ public class MiniGameController : MonoBehaviour
 
         startPosition = draggableImage.localPosition;
         gameObject.SetActive(true);
+
+        // Abilita il drag
+        var dragScript = draggableImage.GetComponent<DragToSide>();
+        if (dragScript != null)
+            dragScript.enabled = true;
     }
+
+
 
     public void EndMiniGame()
     {
+        if (!isPlaying) return;
+
         isPlaying = false;
         gameObject.SetActive(false);
+
+        draggableImage.localPosition = startPosition;
+
+        var dragScript = draggableImage.GetComponent<DragToSide>();
+        if (dragScript != null)
+            dragScript.enabled = false;
+
         onSuccess?.Invoke();
+        onSuccess = null;
     }
+
+
+
 
     private void Update()
     {

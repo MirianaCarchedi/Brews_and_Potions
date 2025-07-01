@@ -17,6 +17,7 @@ TagManager:
   - Character1
   - Character2
   - Character3
+  - Mestolo
   layers:
   - Default
   - TransparentFX
