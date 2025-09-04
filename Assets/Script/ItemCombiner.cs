@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class ItemCombiner : MonoBehaviour
 {
@@ -20,6 +21,11 @@ public class ItemCombiner : MonoBehaviour
 
     [Header("Immagine preview")]
     public Image resultPreviewImage;
+
+    public GameObject BrewButton;
+
+    public Transform sourceSlot;
+    public Transform targetSlot;
 
 
     [System.Serializable]
@@ -45,7 +51,10 @@ public class ItemCombiner : MonoBehaviour
             slotA.childCount > 0 &&
             slotB.childCount > 0 &&
             resultSlot.childCount == 0;
-
+        if (readyToCombine)
+        {
+            BrewButton.SetActive(true);
+        }
         combineButton.interactable = readyToCombine;
 
         // Se il risultato è stato rimosso dallo slot e non siamo in minigioco
@@ -54,6 +63,7 @@ public class ItemCombiner : MonoBehaviour
             // Imposta alpha a 0 perché slot vuoto e minigioco finito
             SetImageAlpha(resultPreviewImage, 0f);
             currentCombination = null;
+            
         }
     }
 
@@ -62,7 +72,7 @@ public class ItemCombiner : MonoBehaviour
     {
         if (slotA.childCount == 0 || slotB.childCount == 0 || resultSlot.childCount > 0)
             return;
-
+        
         GameObject objA = slotA.GetChild(0).gameObject;
         GameObject objB = slotB.GetChild(0).gameObject;
 
@@ -76,16 +86,19 @@ public class ItemCombiner : MonoBehaviour
 
             if (match)
             {
+                
                 currentCombination = combo;
 
                 if (resultPreviewImage != null && combo.previewSprite != null)
                 {
+                    
                     resultPreviewImage.sprite = combo.previewSprite;
                     SetImageAlpha(resultPreviewImage, 1f);  // Rendi visibile
                 }
 
                 miniGameController.StartMiniGame(() =>
                 {
+                    BrewButton.SetActive(false);
                     if (resultPreviewImage != null && combo.postMiniGameSprite != null)
                     {
                         resultPreviewImage.sprite = combo.postMiniGameSprite;
@@ -108,6 +121,13 @@ public class ItemCombiner : MonoBehaviour
         }
 
         Debug.Log("Nessuna combinazione valida trovata per: " + tagA + " + " + tagB);
+    }
+
+    public void DestroyPlants()
+    {
+
+       // Destroy;
+         
     }
 
     private void SetImageAlpha(Image img, float alpha)
