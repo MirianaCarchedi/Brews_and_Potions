@@ -55,6 +55,10 @@ public class ItemCombiner : MonoBehaviour
         {
             BrewButton.SetActive(true);
         }
+        else 
+        {
+            BrewButton.SetActive(false);
+        }
         combineButton.interactable = readyToCombine; 
 
         // Se il risultato è stato rimosso dallo slot e non siamo in minigioco
@@ -79,6 +83,7 @@ public class ItemCombiner : MonoBehaviour
         string tagA = objA.tag;
         string tagB = objB.tag;
 
+        
         foreach (var combo in combinations)
         {
             bool match = (combo.tag1 == tagA && combo.tag2 == tagB) ||
@@ -98,7 +103,7 @@ public class ItemCombiner : MonoBehaviour
 
                 miniGameController.StartMiniGame(() =>
                 {
-                    BrewButton.SetActive(false);
+                    
                     if (resultPreviewImage != null && combo.postMiniGameSprite != null)
                     {
                         resultPreviewImage.sprite = combo.postMiniGameSprite;
