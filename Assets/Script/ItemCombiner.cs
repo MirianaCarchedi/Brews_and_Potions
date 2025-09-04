@@ -55,7 +55,7 @@ public class ItemCombiner : MonoBehaviour
         {
             BrewButton.SetActive(true);
         }
-        combineButton.interactable = readyToCombine;
+        combineButton.interactable = readyToCombine; 
 
         // Se il risultato è stato rimosso dallo slot e non siamo in minigioco
         if (currentCombination != null && resultSlot.childCount == 0 && !miniGameController.IsPlaying && resultPreviewImage != null)
@@ -125,9 +125,17 @@ public class ItemCombiner : MonoBehaviour
 
     public void DestroyPlants()
     {
+        
+            if (slotA.childCount > 0)
+            {
+                Destroy(slotA.GetChild(0).gameObject);
+            }
 
-       // Destroy;
-         
+            if (slotB.childCount > 0)
+            {
+                Destroy(slotB.GetChild(0).gameObject);
+            }
+
     }
 
     private void SetImageAlpha(Image img, float alpha)
