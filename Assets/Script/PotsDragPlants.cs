@@ -1,38 +1,57 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PotsDragPlants : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [Header("Prefab da spawnare (deve avere DragDrop)")]
     public GameObject prefab;
-
-    [Header("Canvas di riferimento")]
     public Canvas canvas;
+    public Transform defaultParent;
 
-    // L'istanza attualmente trascinata
     private GameObject instance;
+
+    // 🔹 Dizionario statico per tenere traccia degli oggetti attivi per prefab
+    private static Dictionary<GameObject, GameObject> activePrefabs = new Dictionary<GameObject, GameObject>();
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (prefab == null || canvas == null) return;
+        if (prefab == null || canvas == null || defaultParent == null) return;
 
-        // Crea l'istanza come figlia del canvas
-        instance = Instantiate(prefab, canvas.transform);
+        // ❌ Blocca spawn e drag se esiste già un'istanza di questo prefab
+        if (activePrefabs.ContainsKey(prefab) && activePrefabs[prefab] != null)
+        {
+            // Non fare nulla, blocca totalmente
+            instance = null;
+            return;
+        }
 
-        // Posiziona subito sotto il cursore
+        // 🔹 Spawn del prefab nel parent di default
+        instance = Instantiate(prefab, defaultParent);
+
+        // Salva nell'elenco degli attivi
+        activePrefabs[prefab] = instance;
+
+        // Imposta OriginalParent per DragDrop
+        var drag = instance.GetComponent<DragDrop>();
+        if (drag != null)
+        {
+            drag.OriginalParent = defaultParent;
+        }
+
+        // Posiziona sotto il cursore
         RectTransform rt = instance.GetComponent<RectTransform>();
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvas.transform as RectTransform,
+            defaultParent as RectTransform,
             eventData.position,
             eventData.pressEventCamera,
             out localPoint
         );
         rt.localPosition = localPoint;
 
-        // Inoltra "inizio drag" al prefab
+        // 🔹 Avvia il drag solo sul nuovo oggetto appena spawnato
+        eventData.pointerDrag = instance;
         ExecuteEvents.Execute(instance, eventData, ExecuteEvents.beginDragHandler);
     }
 
@@ -40,7 +59,6 @@ public class PotsDragPlants : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         if (instance != null)
         {
-            // Inoltra "drag" al prefab
             ExecuteEvents.Execute(instance, eventData, ExecuteEvents.dragHandler);
         }
     }
@@ -49,9 +67,19 @@ public class PotsDragPlants : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         if (instance != null)
         {
-            // Inoltra "fine drag" al prefab
             ExecuteEvents.Execute(instance, eventData, ExecuteEvents.endDragHandler);
             instance = null;
         }
     }
+
+    // 🔹 Metodo statico per distruggere un prefab e liberare lo spawn
+    public static void ClearInstance(GameObject prefabToClear)
+    {
+        if (activePrefabs.ContainsKey(prefabToClear) && activePrefabs[prefabToClear] != null)
+        {
+            GameObject.Destroy(activePrefabs[prefabToClear]);
+            activePrefabs[prefabToClear] = null;
+        }
+    }
 }
+
