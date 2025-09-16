@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5262003179277928673}
   - component: {fileID: 4331118320107487533}
   - component: {fileID: 1016532952905996412}
+  - component: {fileID: -2453329624965748165}
   m_Layer: 5
   m_Name: Stronger self
   m_TagString: StrongerSelf
@@ -201,3 +202,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2453329624965748165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756653569893400813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f6a652e510e494392b7c08432cacb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Stronger Self

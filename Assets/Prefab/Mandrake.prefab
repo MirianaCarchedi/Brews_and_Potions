@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3033880663284290265}
   - component: {fileID: 1328425569066700334}
   - component: {fileID: 3797612622684414618}
+  - component: {fileID: -6968759432218485821}
   m_Layer: 5
   m_Name: Mandrake
   m_TagString: Mandrake
@@ -90,6 +91,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
+  audioSource: {fileID: 0}
+  dragSound: {fileID: 0}
 --- !u!225 &3797612622684414618
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -102,3 +105,16 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-6968759432218485821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871976898706345121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f6a652e510e494392b7c08432cacb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Mandrake

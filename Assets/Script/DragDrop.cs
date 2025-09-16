@@ -35,16 +35,25 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         {
             audioSource.PlayOneShot(dragSound);
         }
+
+        // mostra anche il tooltip mentre trascini
+        var tooltip = GetComponent<ItemTooltip>();
+        if (tooltip != null)
+            TooltipManager.Instance.Show(tooltip.name);
+
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         transform.position += (Vector3)eventData.delta / canvas.scaleFactor;
+        // Aggiorna posizione tooltip mentre trascini
+        TooltipManager.Instance.UpdatePosition();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
+        TooltipManager.Instance.Hide(); // nascondi quando lasci l'oggetto
 
         if (transform.parent == canvas.transform)
         {

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6648098864869818362}
   - component: {fileID: 2016068012164281960}
   - component: {fileID: 2285091598001919716}
+  - component: {fileID: 1407153231329790458}
   m_Layer: 5
   m_Name: 'Open heart '
   m_TagString: OpenHearth
@@ -201,3 +202,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1407153231329790458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560658413651183328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f6a652e510e494392b7c08432cacb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Open Heart

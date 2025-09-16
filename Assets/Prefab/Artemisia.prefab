@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6919748410544250825}
   - component: {fileID: 3648011015607409076}
   - component: {fileID: -7484468182406350106}
+  - component: {fileID: 8859872720297688945}
   m_Layer: 5
   m_Name: Artemisia
   m_TagString: Artemisia
@@ -201,3 +202,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8859872720297688945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5454417663519144140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f6a652e510e494392b7c08432cacb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Artemisia
