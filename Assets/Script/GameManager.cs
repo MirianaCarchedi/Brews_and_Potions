@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     void OnDisable()
     {
         if (bubbleAnimator != null)

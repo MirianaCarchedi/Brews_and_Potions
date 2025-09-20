@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 
 public class ItemCombiner : MonoBehaviour
 {
-
     [Header("Slot di input")]
     public Transform slotA;
     public Transform slotB;
@@ -24,20 +22,18 @@ public class ItemCombiner : MonoBehaviour
 
     public GameObject BrewButton;
 
-    public Transform sourceSlot;
-    public Transform targetSlot;
-
+    [Header("Prefab risultato fallimento")]
+    public GameObject failResultPrefab;
 
     [System.Serializable]
     public class CombinationData
     {
         public string tag1;
         public string tag2;
-
         public GameObject resultPrefab;
-
         public Sprite previewSprite;         // sprite prima del minigioco
         public Sprite postMiniGameSprite;    // sprite dopo il minigioco
+        public string resultTag;             // tag associato al risultato
     }
 
     [Header("Combinazioni possibili")]
@@ -51,39 +47,28 @@ public class ItemCombiner : MonoBehaviour
             slotA.childCount > 0 &&
             slotB.childCount > 0 &&
             resultSlot.childCount == 0;
-        if (readyToCombine)
-        {
-            BrewButton.SetActive(true);
-        }
-        else 
-        {
-            BrewButton.SetActive(false);
-        }
-        combineButton.interactable = readyToCombine; 
 
-        // Se il risultato è stato rimosso dallo slot e non siamo in minigioco
+        BrewButton.SetActive(readyToCombine);
+        combineButton.interactable = readyToCombine;
+
         if (currentCombination != null && resultSlot.childCount == 0 && !miniGameController.IsPlaying && resultPreviewImage != null)
         {
-            // Imposta alpha a 0 perché slot vuoto e minigioco finito
             SetImageAlpha(resultPreviewImage, 0f);
             currentCombination = null;
-            
         }
     }
-
 
     public void Combine()
     {
         if (slotA.childCount == 0 || slotB.childCount == 0 || resultSlot.childCount > 0)
             return;
-        
+
         GameObject objA = slotA.GetChild(0).gameObject;
         GameObject objB = slotB.GetChild(0).gameObject;
 
         string tagA = objA.tag;
         string tagB = objB.tag;
 
-        
         foreach (var combo in combinations)
         {
             bool match = (combo.tag1 == tagA && combo.tag2 == tagB) ||
@@ -91,34 +76,46 @@ public class ItemCombiner : MonoBehaviour
 
             if (match)
             {
-                
                 currentCombination = combo;
 
                 if (resultPreviewImage != null && combo.previewSprite != null)
                 {
-                    
                     resultPreviewImage.sprite = combo.previewSprite;
-                    SetImageAlpha(resultPreviewImage, 1f);  // Rendi visibile
+                    SetImageAlpha(resultPreviewImage, 1f);
                 }
 
-                miniGameController.StartMiniGame(() =>
+                // Ora passa il tag del risultato e la callback (bool, string)
+                miniGameController.SetCurrentResultTag(combo.resultTag);
+                miniGameController.StartMiniGame(combo.resultTag, (success, resultTag) =>
                 {
-                    
-                    if (resultPreviewImage != null && combo.postMiniGameSprite != null)
+                    if (success)
                     {
-                        resultPreviewImage.sprite = combo.postMiniGameSprite;
-                        SetImageAlpha(resultPreviewImage, 1f); // Assicura visibilità anche qui
+                        if (resultPreviewImage != null && combo.postMiniGameSprite != null)
+                        {
+                            resultPreviewImage.sprite = combo.postMiniGameSprite;
+                            SetImageAlpha(resultPreviewImage, 1f);
+                        }
+
+                        GameObject newItem = Instantiate(combo.resultPrefab);
+                        newItem.transform.SetParent(resultSlot, false);
+                        RectTransform rt = newItem.GetComponent<RectTransform>();
+                        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+                        rt.anchoredPosition = Vector2.zero;
+                        rt.localScale = Vector3.one;
                     }
-
-                    GameObject newItem = Instantiate(combo.resultPrefab);
-                    newItem.transform.SetParent(resultSlot, false);
-
-                    RectTransform rt = newItem.GetComponent<RectTransform>();
-                    rt.anchorMin = new Vector2(0.5f, 0.5f);
-                    rt.anchorMax = new Vector2(0.5f, 0.5f);
-                    rt.pivot = new Vector2(0.5f, 0.5f);
-                    rt.anchoredPosition = Vector2.zero;
-                    rt.localScale = Vector3.one;
+                    else
+                    {
+                        // Prefab unico per il fallimento
+                        if (failResultPrefab != null)
+                        {
+                            GameObject failItem = Instantiate(failResultPrefab);
+                            failItem.transform.SetParent(resultSlot, false);
+                            RectTransform rt = failItem.GetComponent<RectTransform>();
+                            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+                            rt.anchoredPosition = Vector2.zero;
+                            rt.localScale = Vector3.one;
+                        }
+                    }
                 });
 
                 return;
@@ -130,17 +127,11 @@ public class ItemCombiner : MonoBehaviour
 
     public void DestroyPlants()
     {
-        
-            if (slotA.childCount > 0)
-            {
-                Destroy(slotA.GetChild(0).gameObject);
-            }
+        if (slotA.childCount > 0)
+            Destroy(slotA.GetChild(0).gameObject);
 
-            if (slotB.childCount > 0)
-            {
-                Destroy(slotB.GetChild(0).gameObject);
-            }
-
+        if (slotB.childCount > 0)
+            Destroy(slotB.GetChild(0).gameObject);
     }
 
     private void SetImageAlpha(Image img, float alpha)
@@ -150,4 +141,3 @@ public class ItemCombiner : MonoBehaviour
         img.color = c;
     }
 }
-

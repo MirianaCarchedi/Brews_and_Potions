@@ -18,6 +18,7 @@ TagManager:
   - Character2
   - Character3
   - Mestolo
+  - FailedPotion
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DragToSide : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -38,7 +38,8 @@ public class DragToSide : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
         if (Mathf.Abs(draggedX) >= dragLimit)
         {
-            miniGameController.EndMiniGame();
+            // ✅ Non chiudo il minigioco, passo alla fase pointer
+            miniGameController.StartPointerPhase();
         }
         else
         {
