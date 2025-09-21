@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
 
     public AudioSource audioSource;   // Riferimento all'AudioSource
     public AudioClip soundEffect;     // Il suono da riprodurre
+    public GameObject advanceButton; // Bottone che fa avanzare il personaggio
+
 
 
     void Start()
@@ -140,46 +142,46 @@ public class GameManager : MonoBehaviour
 
     public void OnButtonClicked()
     {
-        if (!waitingForNextClick)
+        if (slot.transform.childCount > 0)
         {
-            // Primo click: verifica pozione, distruggi l'oggetto nello slot, mostra messaggio finale o negativo, poi aspetta il prossimo click
-            if (slot.transform.childCount > 0)
-            {
-                GameObject droppedObject = slot.transform.GetChild(0).gameObject;
+            GameObject droppedObject = slot.transform.GetChild(0).gameObject;
 
+            // Disattiva la pozione e la rimuove dallo slot
+            droppedObject.transform.SetParent(null);
+            droppedObject.SetActive(false);
 
-                // Disattiva la pozione e la rimuove dallo slot
-                droppedObject.transform.SetParent(null);
-                droppedObject.SetActive(false);
+            string requiredTag = GetRequiredTagForCurrentCharacter();
+            string messageToShow;
+            bool isCorrect = droppedObject.CompareTag(requiredTag);
 
-
-                string requiredTag = GetRequiredTagForCurrentCharacter();
-                string messageToShow;
-                bool isCorrect = droppedObject.CompareTag(requiredTag);
-
-                if (isCorrect)
-                    messageToShow = GetFinalMessageForCurrentCharacter();
-                else
-                    messageToShow = GetNegativeMessageForCurrentCharacter();
-
-                typingEffect.StartTyping(messageToShow);
-                waitingForNextClick = true;
-            }
+            if (isCorrect)
+                messageToShow = GetFinalMessageForCurrentCharacter();
             else
-            {
-                Debug.Log("Nessun oggetto presente nello slot.");
-            }
+                messageToShow = GetNegativeMessageForCurrentCharacter();
+
+            typingEffect.StartTyping(messageToShow);
+
+            // Attiva il nuovo bottone per il secondo step
+            if (advanceButton != null)
+                advanceButton.SetActive(true);
         }
         else
         {
-            // Secondo click: fai uscire il personaggio e passa al prossimo
-            StartCoroutine(ExitCurrentAndAdvance());
-            waitingForNextClick = false;
+            Debug.Log("Nessun oggetto presente nello slot.");
         }
     }
 
+    public void OnAdvanceButtonClicked()
+    {
+        StartCoroutine(ExitCurrentAndAdvance());
 
-IEnumerator ExitCurrentAndAdvance()
+        // Disattiva il bottone dopo l’uso
+        if (advanceButton != null)
+            advanceButton.SetActive(false);
+    }
+
+
+    IEnumerator ExitCurrentAndAdvance()
 {
     if (characterExitAnimator != null)
     {
@@ -209,9 +211,10 @@ IEnumerator ExitCurrentAndAdvance()
         currentCharacter.SetActive(true);
         characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
-        ShowObjectInSlot(objectForCharacter2);
+            if (objectForCharacter2 != null)
+                objectForCharacter2.SetActive(true);
 
-        Animator nextAnim = currentCharacter.GetComponent<Animator>();
+            Animator nextAnim = currentCharacter.GetComponent<Animator>();
         if (nextAnim != null)
             yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
     }
@@ -221,9 +224,10 @@ IEnumerator ExitCurrentAndAdvance()
         currentCharacter.SetActive(true);
         characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
-        ShowObjectInSlot(objectForCharacter3);
+            if (objectForCharacter3 != null)
+                objectForCharacter3.SetActive(true);
 
-        Animator nextAnim = currentCharacter.GetComponent<Animator>();
+            Animator nextAnim = currentCharacter.GetComponent<Animator>();
         if (nextAnim != null)
             yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
     }
