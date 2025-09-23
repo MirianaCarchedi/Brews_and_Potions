@@ -18,35 +18,45 @@ public class GameManager : MonoBehaviour
 
     public GameObject slot;                   // Lo slot dove avviene il drop
 
-    // Nuovi riferimenti diretti ai GameObject da attivare per Character 2 e 3
+    // Riferimenti diretti agli oggetti dei personaggi
     public GameObject objectForCharacter2;
     public GameObject objectForCharacter3;
+    public GameObject objectForCharacter4;
+    public GameObject objectForCharacter5;
     public Transform slotToShowObject;        // Slot dove mettere questi oggetti
 
     // Messaggi iniziali per ogni personaggio
     public string messageCharacter1;
     public string messageCharacter2;
     public string messageCharacter3;
+    public string messageCharacter4;
+    public string messageCharacter5;
 
     // Messaggi finali per ogni personaggio
     public string finalMessageCharacter1;
     public string finalMessageCharacter2;
     public string finalMessageCharacter3;
+    public string finalMessageCharacter4;
+    public string finalMessageCharacter5;
 
     // Messaggi negativi per ogni personaggio
     public string negativeMessageCharacter1;
     public string negativeMessageCharacter2;
     public string negativeMessageCharacter3;
+    public string negativeMessageCharacter4;
+    public string negativeMessageCharacter5;
 
     public Animator characterExitAnimator;      // Animator del personaggio che va via
-    public GameObject nextCharacter;            // Il personaggio da attivare dopo
-    public GameObject nextCharacter2;           // Il terzo personaggio da attivare dopo il secondo
-    public GameObject currentCharacter;         // Il personaggio attuale
+    public GameObject nextCharacter;            // Personaggio 2
+    public GameObject nextCharacter2;           // Personaggio 3
+    public GameObject nextCharacter3;           // Personaggio 4
+    public GameObject nextCharacter4;           // Personaggio 5
+    public GameObject currentCharacter;         // Personaggio attuale
 
-    private int currentStage = 0;                // Stage corrente (0,1,2)
+    private int currentStage = 0;                // Stage corrente (0,1,2,3,4)
     private bool waitingForNextClick = false;    // Se si aspetta il click per passare al prossimo personaggio
 
-    public string nextSceneName;  // Nome della scena da caricare dopo il terzo personaggio
+    public string nextSceneName;  // Nome della scena da caricare dopo il quinto personaggio
 
     public AudioSource audioSource;   // Riferimento all'AudioSource
     public AudioClip soundEffect;     // Il suono da riprodurre
@@ -113,14 +123,17 @@ public class GameManager : MonoBehaviour
             characterAnim.Play("Student_Animation", 0);
         else if (currentCharacter.CompareTag("Character3"))
             characterAnim.Play("Lady_Animation", 0);
+        else if (currentCharacter.CompareTag("Character4"))
+            characterAnim.Play("Artist_Animation", 0);
+        else if (currentCharacter.CompareTag("Character5"))
+            characterAnim.Play("Traveler_Animation", 0);
 
-        // Aspetta la durata dell'animazione (es. 2 secondi)
         yield return new WaitForSeconds(2f);
 
         // Avvia coroutine StandBy
         StartCoroutine(PlayStandByAnimation(characterAnim));
 
-        // Continua con il resto del flusso (es. abilitare la nuvoletta, scrivere testo)
+        // Continua con il resto del flusso
         bubbleAnimator.gameObject.SetActive(true);
         typingEffect.StartTyping(GetInitialMessageForCurrentCharacter());
     }
@@ -135,8 +148,12 @@ public class GameManager : MonoBehaviour
             characterAnim.Play("Student_StandBy", 0);
         else if (currentCharacter.CompareTag("Character3"))
             characterAnim.Play("Lady_StandBy", 0);
+        else if (currentCharacter.CompareTag("Character4"))
+            characterAnim.Play("Artist_StandBy", 0);
+        else if (currentCharacter.CompareTag("Character5"))
+            characterAnim.Play("Traveler_StandBy", 0);
 
-        yield return null;  // puoi aggiungere altre logiche se vuoi
+        yield return null;
     }
 
 
@@ -146,7 +163,6 @@ public class GameManager : MonoBehaviour
         {
             GameObject droppedObject = slot.transform.GetChild(0).gameObject;
 
-            // Disattiva la pozione e la rimuove dallo slot
             droppedObject.transform.SetParent(null);
             droppedObject.SetActive(false);
 
@@ -161,7 +177,6 @@ public class GameManager : MonoBehaviour
 
             typingEffect.StartTyping(messageToShow);
 
-            // Attiva il nuovo bottone per il secondo step
             if (advanceButton != null)
                 advanceButton.SetActive(true);
         }
@@ -175,103 +190,131 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(ExitCurrentAndAdvance());
 
-        // Disattiva il bottone dopo l’uso
         if (advanceButton != null)
             advanceButton.SetActive(false);
     }
 
 
     IEnumerator ExitCurrentAndAdvance()
-{
-    if (characterExitAnimator != null)
     {
-        if (currentCharacter.CompareTag("Character1"))
-            characterExitAnimator.Play("Mario_Exit", 0);
-        else if (currentCharacter.CompareTag("Character2"))
-            characterExitAnimator.Play("Student_Exit", 0);
-        else if (currentCharacter.CompareTag("Character3"))
-            characterExitAnimator.Play("Lady_Exit", 0);
+        if (characterExitAnimator != null)
+        {
+            if (currentCharacter.CompareTag("Character1"))
+                characterExitAnimator.Play("Mario_Exit", 0);
+            else if (currentCharacter.CompareTag("Character2"))
+                characterExitAnimator.Play("Student_Exit", 0);
+            else if (currentCharacter.CompareTag("Character3"))
+                characterExitAnimator.Play("Lady_Exit", 0);
+            else if (currentCharacter.CompareTag("Character4"))
+                characterExitAnimator.Play("Artist_Exit", 0);
+            else if (currentCharacter.CompareTag("Character5"))
+                characterExitAnimator.Play("Traveler_Exit", 0);
 
-        yield return new WaitForSeconds(3f);
-    }
+            yield return new WaitForSeconds(3f);
+        }
 
-    if (currentCharacter != null)
-    {
-        currentCharacter.SetActive(false);
+        if (currentCharacter != null)
+        {
+            currentCharacter.SetActive(false);
+            textComponent.text = "";
+        }
 
-        // Cancella il testo nella nuvoletta
-        textComponent.text = "";
-    }
+        currentStage++;
 
-    currentStage++;
-
-    if (currentStage == 1 && nextCharacter != null)
-    {
-        currentCharacter = nextCharacter;
-        currentCharacter.SetActive(true);
-        characterExitAnimator = currentCharacter.GetComponent<Animator>();
+        if (currentStage == 1 && nextCharacter != null)
+        {
+            currentCharacter = nextCharacter;
+            currentCharacter.SetActive(true);
+            characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
             if (objectForCharacter2 != null)
                 objectForCharacter2.SetActive(true);
 
             Animator nextAnim = currentCharacter.GetComponent<Animator>();
-        if (nextAnim != null)
-            yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
-    }
-    else if (currentStage == 2 && nextCharacter2 != null)
-    {
-        currentCharacter = nextCharacter2;
-        currentCharacter.SetActive(true);
-        characterExitAnimator = currentCharacter.GetComponent<Animator>();
+            if (nextAnim != null)
+                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
+        }
+        else if (currentStage == 2 && nextCharacter2 != null)
+        {
+            currentCharacter = nextCharacter2;
+            currentCharacter.SetActive(true);
+            characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
             if (objectForCharacter3 != null)
                 objectForCharacter3.SetActive(true);
 
             Animator nextAnim = currentCharacter.GetComponent<Animator>();
-        if (nextAnim != null)
-            yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
-    }
-    else if (currentStage >= 3)
-    {
-        if (characterExitAnimator != null)
+            if (nextAnim != null)
+                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
+        }
+        else if (currentStage == 3 && nextCharacter3 != null)
         {
-            if (currentCharacter != null)
-            {
-                if (currentCharacter.CompareTag("Character1"))
-                    characterExitAnimator.Play("Mario_Exit", 0);
-                else if (currentCharacter.CompareTag("Character2"))
-                    characterExitAnimator.Play("Student_Exit", 0);
-                else if (currentCharacter.CompareTag("Character3"))
-                    characterExitAnimator.Play("Lady_Exit", 0);
+            currentCharacter = nextCharacter3;
+            currentCharacter.SetActive(true);
+            characterExitAnimator = currentCharacter.GetComponent<Animator>();
 
-                yield return new WaitForSeconds(2f);
+            if (objectForCharacter4 != null)
+                objectForCharacter4.SetActive(true);
+
+            Animator nextAnim = currentCharacter.GetComponent<Animator>();
+            if (nextAnim != null)
+                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
+        }
+        else if (currentStage == 4 && nextCharacter4 != null)
+        {
+            currentCharacter = nextCharacter4;
+            currentCharacter.SetActive(true);
+            characterExitAnimator = currentCharacter.GetComponent<Animator>();
+
+            if (objectForCharacter5 != null)
+                objectForCharacter5.SetActive(true);
+
+            Animator nextAnim = currentCharacter.GetComponent<Animator>();
+            if (nextAnim != null)
+                yield return StartCoroutine(PlaySequenceForCurrentCharacter(nextAnim));
+        }
+        else if (currentStage >= 5)
+        {
+            if (characterExitAnimator != null)
+            {
+                if (currentCharacter != null)
+                {
+                    if (currentCharacter.CompareTag("Character1"))
+                        characterExitAnimator.Play("Mario_Exit", 0);
+                    else if (currentCharacter.CompareTag("Character2"))
+                        characterExitAnimator.Play("Student_Exit", 0);
+                    else if (currentCharacter.CompareTag("Character3"))
+                        characterExitAnimator.Play("Lady_Exit", 0);
+                    else if (currentCharacter.CompareTag("Character4"))
+                        characterExitAnimator.Play("Artist_Exit", 0);
+                    else if (currentCharacter.CompareTag("Character5"))
+                        characterExitAnimator.Play("Traveler_Exit", 0);
+
+                    yield return new WaitForSeconds(2f);
+                }
+            }
+
+            if (currentCharacter != null)
+                currentCharacter.SetActive(false);
+
+            if (!string.IsNullOrEmpty(nextSceneName))
+            {
+                SceneManager.LoadScene(nextSceneName);
             }
         }
-
-        if (currentCharacter != null)
-            currentCharacter.SetActive(false);
-
-        if (!string.IsNullOrEmpty(nextSceneName))
-        {
-            SceneManager.LoadScene(nextSceneName);
-        }
     }
-}
 
 
-    // Metodo helper per mostrare l'oggetto nello slot e attivarlo
     void ShowObjectInSlot(GameObject prefab)
     {
         if (prefab != null && slotToShowObject != null)
         {
-            // Istanzia il prefab nella scena
             GameObject instance = Instantiate(prefab, slotToShowObject);
             instance.SetActive(true);
         }
     }
 
 
-    // Helper per prendere i messaggi e tag in base al personaggio attuale
     string GetRequiredTagForCurrentCharacter()
     {
         if (currentCharacter.CompareTag("Character1"))
@@ -280,6 +323,10 @@ public class GameManager : MonoBehaviour
             return "LightMind";
         else if (currentCharacter.CompareTag("Character3"))
             return "OpenHearth";
+        else if (currentCharacter.CompareTag("Character4"))
+            return "BraveSoul";
+        else if (currentCharacter.CompareTag("Character5"))
+            return "PureSpirit";
         return "";
     }
 
@@ -291,6 +338,10 @@ public class GameManager : MonoBehaviour
             return messageCharacter2;
         else if (currentCharacter.CompareTag("Character3"))
             return messageCharacter3;
+        else if (currentCharacter.CompareTag("Character4"))
+            return messageCharacter4;
+        else if (currentCharacter.CompareTag("Character5"))
+            return messageCharacter5;
         return "";
     }
 
@@ -302,6 +353,10 @@ public class GameManager : MonoBehaviour
             return finalMessageCharacter2;
         else if (currentCharacter.CompareTag("Character3"))
             return finalMessageCharacter3;
+        else if (currentCharacter.CompareTag("Character4"))
+            return finalMessageCharacter4;
+        else if (currentCharacter.CompareTag("Character5"))
+            return finalMessageCharacter5;
         return "";
     }
 
@@ -313,6 +368,10 @@ public class GameManager : MonoBehaviour
             return negativeMessageCharacter2;
         else if (currentCharacter.CompareTag("Character3"))
             return negativeMessageCharacter3;
+        else if (currentCharacter.CompareTag("Character4"))
+            return negativeMessageCharacter4;
+        else if (currentCharacter.CompareTag("Character5"))
+            return negativeMessageCharacter5;
         return "";
     }
 }

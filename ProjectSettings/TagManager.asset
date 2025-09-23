@@ -19,6 +19,16 @@ TagManager:
   - Character3
   - Mestolo
   - FailedPotion
+  - Dragoncello
+  - Salvia
+  - Character4
+  - Character5
+  - LimpidVision
+  - PurityRest
+  - Pathfinder
+  - SacredClarity
+  - GuardianBrew
+  - SilentCalm
   layers:
   - Default
   - TransparentFX

@@ -30,10 +30,11 @@ public class ItemCombiner : MonoBehaviour
     {
         public string tag1;
         public string tag2;
-        public GameObject resultPrefab;
-        public Sprite previewSprite;         // sprite prima del minigioco
-        public Sprite postMiniGameSprite;    // sprite dopo il minigioco
-        public string resultTag;             // tag associato al risultato
+        public GameObject resultPrefabN;  // prefab per safeZone A/B
+        public GameObject resultPrefabP;  // prefab per safeZone C
+        public Sprite previewSprite;
+        public Sprite postMiniGameSprite;
+        public string resultTag;          // tag univoco della combinazione
     }
 
     [Header("Combinazioni possibili")]
@@ -84,28 +85,31 @@ public class ItemCombiner : MonoBehaviour
                     SetImageAlpha(resultPreviewImage, 1f);
                 }
 
-                // Ora passa il tag del risultato e la callback (bool, string)
                 miniGameController.SetCurrentResultTag(combo.resultTag);
                 miniGameController.StartMiniGame(combo.resultTag, (success, resultTag) =>
                 {
                     if (success)
                     {
-                        if (resultPreviewImage != null && combo.postMiniGameSprite != null)
-                        {
-                            resultPreviewImage.sprite = combo.postMiniGameSprite;
-                            SetImageAlpha(resultPreviewImage, 1f);
-                        }
+                        GameObject newItem = null;
 
-                        GameObject newItem = Instantiate(combo.resultPrefab);
-                        newItem.transform.SetParent(resultSlot, false);
-                        RectTransform rt = newItem.GetComponent<RectTransform>();
-                        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
-                        rt.anchoredPosition = Vector2.zero;
-                        rt.localScale = Vector3.one;
+                        // Scegli il prefab corretto in base al tag restituito dal minigioco
+                        if (resultTag == "resultN" && combo.resultPrefabN != null)
+                            newItem = Instantiate(combo.resultPrefabN);
+                        else if (resultTag == "resultP" && combo.resultPrefabP != null)
+                            newItem = Instantiate(combo.resultPrefabP);
+
+                        if (newItem != null)
+                        {
+                            newItem.transform.SetParent(resultSlot, false);
+                            RectTransform rt = newItem.GetComponent<RectTransform>();
+                            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+                            rt.anchoredPosition = Vector2.zero;
+                            rt.localScale = Vector3.one;
+                        }
                     }
                     else
                     {
-                        // Prefab unico per il fallimento
+                        // Prefab unico per fallimento
                         if (failResultPrefab != null)
                         {
                             GameObject failItem = Instantiate(failResultPrefab);
@@ -115,6 +119,13 @@ public class ItemCombiner : MonoBehaviour
                             rt.anchoredPosition = Vector2.zero;
                             rt.localScale = Vector3.one;
                         }
+                    }
+
+                    // Aggiorna sprite post minigioco
+                    if (success && resultPreviewImage != null && combo.postMiniGameSprite != null)
+                    {
+                        resultPreviewImage.sprite = combo.postMiniGameSprite;
+                        SetImageAlpha(resultPreviewImage, 1f);
                     }
                 });
 

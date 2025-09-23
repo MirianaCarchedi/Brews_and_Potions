@@ -15,21 +15,19 @@ public class MiniGameController : MonoBehaviour
     public RectTransform pointer;
     public Transform pointA;
     public Transform pointB;
-    public RectTransform safeZone;
+    public RectTransform safeZoneA;  // Safezone per primo risultato
+    public RectTransform safeZoneB;  // Safezone per primo risultato
+    public RectTransform safeZoneC;  // Safezone per secondo risultato
     public float moveSpeed = 200f;
 
     [Header("UI Panel")]
-    public GameObject pointerPanel; // Panel da mostrare durante la modalità pointer
-
-    [Header("Popup risultati")]
-    public List<GameObject> resultPopups; // Lista dei pannelli dei popup per ciascun tag
-    private HashSet<string> seenTags = new HashSet<string>(); // Tag già mostrati
+    public GameObject pointerPanel;
 
     [Header("Prefab fallimento")]
-    public GameObject failPrefab; // Prefab unico da istanziare in caso di fallimento
+    public GameObject failPrefab;
 
     private Vector3 startPosition;
-    private Action<bool, string> onComplete;  // Callback: successo + tag risultato
+    private Action<bool, string> onComplete;
     public bool isPlaying = false;
     public bool IsPlaying => isPlaying;
 
@@ -41,9 +39,6 @@ public class MiniGameController : MonoBehaviour
 
     private string currentResultTag = "";
 
-    /// <summary>
-    /// Imposta il tag corrente del risultato, utile per chiamare il popup corrispondente
-    /// </summary>
     public void SetCurrentResultTag(string tag)
     {
         currentResultTag = tag;
@@ -67,11 +62,7 @@ public class MiniGameController : MonoBehaviour
             pointerPanel.SetActive(false);
     }
 
-
-    /// <summary>
-    /// Termina il minigioco
-    /// </summary>
-    public void EndMiniGame(bool success)
+    public void EndMiniGame(bool success, string resultTag)
     {
         if (!isPlaying) return;
 
@@ -87,27 +78,13 @@ public class MiniGameController : MonoBehaviour
         if (dragScript != null)
             dragScript.enabled = false;
 
-        // Mostra popup solo la prima volta per quel tag
-        if (success && !string.IsNullOrEmpty(currentResultTag) && !seenTags.Contains(currentResultTag))
-        {
-            seenTags.Add(currentResultTag);
-            foreach (var popup in resultPopups)
-            {
-                if (popup != null && popup.name == currentResultTag)
-                {
-                    popup.SetActive(true);
-                    break;
-                }
-            }
-        }
-
-        // Istanzia prefab unico in caso di fallimento
+        // Se fallimento e prefab fallimento assegnato, lo istanzia
         if (!success && failPrefab != null)
         {
             Instantiate(failPrefab, pointerPanel != null ? pointerPanel.transform : transform);
         }
 
-        onComplete?.Invoke(success, currentResultTag);
+        onComplete?.Invoke(success, resultTag);
         onComplete = null;
         currentResultTag = "";
     }
@@ -147,9 +124,6 @@ public class MiniGameController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Attiva la modalità Pointer
-    /// </summary>
     public void StartPointerPhase()
     {
         currentMode = GameMode.Pointer;
@@ -179,8 +153,22 @@ public class MiniGameController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             pointerStopped = true;
-            bool insideSafe = RectTransformUtility.RectangleContainsScreenPoint(safeZone, pointer.position, null);
-            EndMiniGame(insideSafe);
+
+            // Controllo delle safezone
+            if (RectTransformUtility.RectangleContainsScreenPoint(safeZoneA, pointer.position, null) ||
+                RectTransformUtility.RectangleContainsScreenPoint(safeZoneB, pointer.position, null))
+            {
+                EndMiniGame(true, "resultN");
+            }
+            else if (RectTransformUtility.RectangleContainsScreenPoint(safeZoneC, pointer.position, null))
+            {
+                EndMiniGame(true, "resultP");
+            }
+            else
+            {
+                EndMiniGame(false, currentResultTag);
+            }
         }
     }
 }
+
