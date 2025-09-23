@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public class ItemCombiner : MonoBehaviour
@@ -35,12 +36,21 @@ public class ItemCombiner : MonoBehaviour
         public Sprite previewSprite;
         public Sprite postMiniGameSprite;
         public string resultTag;          // tag univoco della combinazione
+
+        [Header("Popup")]
+        public GameObject resultPopup;    // popup assegnabile dall'Inspector
     }
 
     [Header("Combinazioni possibili")]
     public List<CombinationData> combinations = new List<CombinationData>();
 
     private CombinationData currentCombination = null;
+
+    public CombinationData CurrentCombination
+    {
+        get { return currentCombination; }
+    }
+
 
     private void Update()
     {
@@ -56,6 +66,22 @@ public class ItemCombiner : MonoBehaviour
         {
             SetImageAlpha(resultPreviewImage, 0f);
             currentCombination = null;
+        }
+    }
+    public void ShowPostMiniGameSprite(CombinationData combo)
+    {
+        if (resultPreviewImage != null && combo.postMiniGameSprite != null)
+        {
+            resultPreviewImage.sprite = combo.postMiniGameSprite;
+            SetImageAlpha(resultPreviewImage, 1f);
+        }
+    }
+
+    public void HidePostMiniGameSprite()
+    {
+        if (resultPreviewImage != null)
+        {
+            SetImageAlpha(resultPreviewImage, 0f);
         }
     }
 
@@ -106,6 +132,13 @@ public class ItemCombiner : MonoBehaviour
                             rt.anchoredPosition = Vector2.zero;
                             rt.localScale = Vector3.one;
                         }
+
+                        // Mostra popup se assegnato
+                        if (combo.resultPopup != null)
+                        {
+                            combo.resultPopup.SetActive(true);
+                            StartCoroutine(DestroyPopupAfterDelay(combo.resultPopup, 5f));
+                        }
                     }
                     else
                     {
@@ -125,7 +158,7 @@ public class ItemCombiner : MonoBehaviour
                     if (success && resultPreviewImage != null && combo.postMiniGameSprite != null)
                     {
                         resultPreviewImage.sprite = combo.postMiniGameSprite;
-                        SetImageAlpha(resultPreviewImage, 1f);
+                        SetImageAlpha(resultPreviewImage, 0f);
                     }
                 });
 
@@ -150,5 +183,12 @@ public class ItemCombiner : MonoBehaviour
         Color c = img.color;
         c.a = alpha;
         img.color = c;
+    }
+
+    private IEnumerator DestroyPopupAfterDelay(GameObject popup, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (popup != null)
+            Destroy(popup);
     }
 }

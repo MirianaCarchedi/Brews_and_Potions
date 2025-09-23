@@ -29,6 +29,8 @@ TagManager:
   - SacredClarity
   - GuardianBrew
   - SilentCalm
+  - PlaceHolder2
+  - PlaceHolder1
   layers:
   - Default
   - TransparentFX

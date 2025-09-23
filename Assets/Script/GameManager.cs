@@ -324,9 +324,9 @@ public class GameManager : MonoBehaviour
         else if (currentCharacter.CompareTag("Character3"))
             return "OpenHearth";
         else if (currentCharacter.CompareTag("Character4"))
-            return "BraveSoul";
+            return "SilentCalm";
         else if (currentCharacter.CompareTag("Character5"))
-            return "PureSpirit";
+            return "GuardianBrew";
         return "";
     }
 

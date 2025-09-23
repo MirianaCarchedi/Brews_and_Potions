@@ -2,12 +2,13 @@
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 public class MiniGameController : MonoBehaviour
 {
     [Header("Modalità DRAG")]
     public RectTransform draggableImage;
-    public float successThreshold = 200f;
+    public float successThreshold = 0f; // in drag mode basta muoverlo
     public float minX = -200f;
     public float maxX = 200f;
 
@@ -15,13 +16,17 @@ public class MiniGameController : MonoBehaviour
     public RectTransform pointer;
     public Transform pointA;
     public Transform pointB;
-    public RectTransform safeZoneA;  // Safezone per primo risultato
-    public RectTransform safeZoneB;  // Safezone per primo risultato
-    public RectTransform safeZoneC;  // Safezone per secondo risultato
+    public RectTransform safeZoneA;  // Safezone per resultN
+    public RectTransform safeZoneB;  // Safezone per resultN
+    public RectTransform safeZoneC;  // Safezone per resultP
     public float moveSpeed = 200f;
 
     [Header("UI Panel")]
     public GameObject pointerPanel;
+
+    [Header("Popup risultati")]
+    public List<GameObject> resultPopups; // popup per resultN e resultP
+    private HashSet<string> seenTags = new HashSet<string>();
 
     [Header("Prefab fallimento")]
     public GameObject failPrefab;
@@ -36,8 +41,9 @@ public class MiniGameController : MonoBehaviour
 
     private Vector3 pointerTarget;
     private bool pointerStopped = false;
-
     private string currentResultTag = "";
+
+    private bool dragStarted = false;
 
     public void SetCurrentResultTag(string tag)
     {
@@ -49,6 +55,7 @@ public class MiniGameController : MonoBehaviour
         currentResultTag = resultTag;
         onComplete = onResult;
         isPlaying = true;
+        dragStarted = false;
         gameObject.SetActive(true);
 
         currentMode = GameMode.Drag;
@@ -78,7 +85,21 @@ public class MiniGameController : MonoBehaviour
         if (dragScript != null)
             dragScript.enabled = false;
 
-        // Se fallimento e prefab fallimento assegnato, lo istanzia
+        if (success && !string.IsNullOrEmpty(resultTag) && !seenTags.Contains(resultTag))
+        {
+            seenTags.Add(resultTag);
+            foreach (var popup in resultPopups)
+            {
+                if (popup != null && popup.name == resultTag)
+                {
+                    popup.SetActive(true);
+                    StartCoroutine(DestroyPopupAfterDelay(popup, 5f)); // ✅ Distrugge completamente dopo 5 secondi
+                    break;
+                }
+            }
+        }
+
+        // Istanzia prefab di fallimento se necessario
         if (!success && failPrefab != null)
         {
             Instantiate(failPrefab, pointerPanel != null ? pointerPanel.transform : transform);
@@ -89,6 +110,12 @@ public class MiniGameController : MonoBehaviour
         currentResultTag = "";
     }
 
+    private IEnumerator DestroyPopupAfterDelay(GameObject popup, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (popup != null)
+            Destroy(popup);
+    }
     private void Update()
     {
         if (!isPlaying) return;
@@ -101,6 +128,10 @@ public class MiniGameController : MonoBehaviour
 
     private void HandleDragMode()
     {
+        var dragScript = draggableImage.GetComponent<DragToSide>();
+        if (!dragStarted || dragScript == null || !dragScript.enabled)
+            return;
+
         if (Input.GetMouseButton(0))
         {
             Vector2 mousePos;
@@ -117,11 +148,16 @@ public class MiniGameController : MonoBehaviour
             draggableImage.localPosition = newPos;
         }
 
-        float distanceMoved = Mathf.Abs(draggableImage.localPosition.x - startPosition.x);
-        if (distanceMoved >= successThreshold)
+        if (dragStarted && Input.GetMouseButtonUp(0))
         {
+            // Appena rilasciato, passo al passo successivo
             StartPointerPhase();
         }
+    }
+
+    public void NotifyDragStarted()
+    {
+        dragStarted = true;
     }
 
     public void StartPointerPhase()
@@ -154,7 +190,6 @@ public class MiniGameController : MonoBehaviour
         {
             pointerStopped = true;
 
-            // Controllo delle safezone
             if (RectTransformUtility.RectangleContainsScreenPoint(safeZoneA, pointer.position, null) ||
                 RectTransformUtility.RectangleContainsScreenPoint(safeZoneB, pointer.position, null))
             {
@@ -171,4 +206,3 @@ public class MiniGameController : MonoBehaviour
         }
     }
 }
-
