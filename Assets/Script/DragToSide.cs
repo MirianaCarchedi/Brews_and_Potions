@@ -5,7 +5,6 @@ public class DragToSide : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 {
     [SerializeField] private float dragLimit = 200f;
     [SerializeField] private MiniGameController miniGameController;
-    [SerializeField] private ItemCombiner itemCombiner;
 
     private RectTransform rectTransform;
     private Vector2 startPosition;
@@ -29,9 +28,6 @@ public class DragToSide : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
         miniGameController.NotifyDragStarted(); // Notifica che il drag è iniziato
 
-        // Mostra lo sprite post-minigioco usando il metodo pubblico
-        if (itemCombiner != null)
-            itemCombiner.ShowPostMiniGameSprite(itemCombiner.CurrentCombination);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -64,8 +60,5 @@ public class DragToSide : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             rectTransform.anchoredPosition = startPosition;
         }
 
-        // Nascondi lo sprite post-minigioco
-        if (itemCombiner != null)
-            itemCombiner.HidePostMiniGameSprite();
     }
 }

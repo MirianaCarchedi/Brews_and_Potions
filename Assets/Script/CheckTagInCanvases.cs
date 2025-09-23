@@ -7,33 +7,34 @@ public class CheckTagInCanvases : MonoBehaviour
     public class TagChildPair
     {
         public string tag;
-        public GameObject childToEnable;
+        public GameObject childToEnable; // il popup associato
     }
 
     public TagChildPair[] tagChildPairs;
 
-    // Tiene traccia dei tag già "trovati" almeno una volta
+    // Tiene traccia dei tag già attivati almeno una volta
     private static HashSet<string> seenTags = new HashSet<string>();
 
-    private void OnEnable()
+    public Canvas targetCanvas; // Canvas da monitorare
+
+    private void Update()
     {
         foreach (var pair in tagChildPairs)
         {
-            // Se è già stato visto in passato, attiva direttamente il figlio
             if (seenTags.Contains(pair.tag))
             {
-                pair.childToEnable?.SetActive(true);
+                // Se il popup è già stato attivato una volta, lo lascia attivo
+                if (pair.childToEnable != null && !pair.childToEnable.activeSelf)
+                    pair.childToEnable.SetActive(true);
                 continue;
             }
 
-            // Altrimenti, cerca il tag tra gli oggetti in scena (anche disattivati)
-            GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
-
-            foreach (GameObject obj in allObjects)
+            // Cerca tra tutti i figli del canvas (anche disattivati)
+            Transform[] children = targetCanvas.GetComponentsInChildren<Transform>(true);
+            foreach (var child in children)
             {
-                if (obj.CompareTag(pair.tag) &&
-                    obj.hideFlags == HideFlags.None &&
-                    obj.scene.IsValid())
+                if (child == null) continue;
+                if (child.CompareTag(pair.tag) && child.gameObject.activeInHierarchy)
                 {
                     seenTags.Add(pair.tag);
                     pair.childToEnable?.SetActive(true);
@@ -43,5 +44,3 @@ public class CheckTagInCanvases : MonoBehaviour
         }
     }
 }
-
-

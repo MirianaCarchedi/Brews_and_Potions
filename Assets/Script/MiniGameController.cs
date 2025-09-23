@@ -20,6 +20,7 @@ public class MiniGameController : MonoBehaviour
     public RectTransform safeZoneB;  // Safezone per resultN
     public RectTransform safeZoneC;  // Safezone per resultP
     public float moveSpeed = 200f;
+    [SerializeField] private ItemCombiner itemCombiner;
 
     [Header("UI Panel")]
     public GameObject pointerPanel;
@@ -162,6 +163,9 @@ public class MiniGameController : MonoBehaviour
 
     public void StartPointerPhase()
     {
+        // Mostra lo sprite post-minigioco usando il metodo pubblico
+        if (itemCombiner != null)
+            itemCombiner.ShowPostMiniGameSprite(itemCombiner.CurrentCombination);
         currentMode = GameMode.Pointer;
         pointerStopped = false;
         pointer.position = pointA.position;
@@ -188,6 +192,9 @@ public class MiniGameController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            // Nascondi lo sprite post-minigioco
+            if (itemCombiner != null)
+                itemCombiner.HidePostMiniGameSprite();
             pointerStopped = true;
 
             if (RectTransformUtility.RectangleContainsScreenPoint(safeZoneA, pointer.position, null) ||

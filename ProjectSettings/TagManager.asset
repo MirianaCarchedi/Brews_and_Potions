@@ -8,7 +8,6 @@ TagManager:
   - Belladonna
   - Verbena
   - Mandrake
-  - HolyStrenght
   - DeepSlumber
   - LightMind
   - OpenHearth
@@ -31,6 +30,7 @@ TagManager:
   - SilentCalm
   - PlaceHolder2
   - PlaceHolder1
+  - HolyStrength
   layers:
   - Default
   - TransparentFX

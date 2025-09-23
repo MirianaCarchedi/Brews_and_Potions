@@ -318,7 +318,7 @@ public class GameManager : MonoBehaviour
     string GetRequiredTagForCurrentCharacter()
     {
         if (currentCharacter.CompareTag("Character1"))
-            return "HolyStrenght";
+            return "HolyStrength";
         else if (currentCharacter.CompareTag("Character2"))
             return "LightMind";
         else if (currentCharacter.CompareTag("Character3"))

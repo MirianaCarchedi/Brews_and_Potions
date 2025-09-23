@@ -37,8 +37,9 @@ public class ItemCombiner : MonoBehaviour
         public Sprite postMiniGameSprite;
         public string resultTag;          // tag univoco della combinazione
 
-        [Header("Popup")]
-        public GameObject resultPopup;    // popup assegnabile dall'Inspector
+        [Header("Popup specifici per risultato")]
+        public GameObject resultPopupN; // popup per resultPrefabN
+        public GameObject resultPopupP; // popup per resultPrefabP
     }
 
     [Header("Combinazioni possibili")]
@@ -50,7 +51,6 @@ public class ItemCombiner : MonoBehaviour
     {
         get { return currentCombination; }
     }
-
 
     private void Update()
     {
@@ -68,6 +68,7 @@ public class ItemCombiner : MonoBehaviour
             currentCombination = null;
         }
     }
+
     public void ShowPostMiniGameSprite(CombinationData combo)
     {
         if (resultPreviewImage != null && combo.postMiniGameSprite != null)
@@ -117,12 +118,19 @@ public class ItemCombiner : MonoBehaviour
                     if (success)
                     {
                         GameObject newItem = null;
+                        GameObject popupToShow = null;
 
                         // Scegli il prefab corretto in base al tag restituito dal minigioco
                         if (resultTag == "resultN" && combo.resultPrefabN != null)
+                        {
                             newItem = Instantiate(combo.resultPrefabN);
+                            popupToShow = combo.resultPopupN; // usa il popup assegnato
+                        }
                         else if (resultTag == "resultP" && combo.resultPrefabP != null)
+                        {
                             newItem = Instantiate(combo.resultPrefabP);
+                            popupToShow = combo.resultPopupP; // usa il popup assegnato
+                        }
 
                         if (newItem != null)
                         {
@@ -133,11 +141,11 @@ public class ItemCombiner : MonoBehaviour
                             rt.localScale = Vector3.one;
                         }
 
-                        // Mostra popup se assegnato
-                        if (combo.resultPopup != null)
+                        // Mostra popup ogni volta e disattivalo dopo 2.5 secondi
+                        if (popupToShow != null)
                         {
-                            combo.resultPopup.SetActive(true);
-                            StartCoroutine(DestroyPopupAfterDelay(combo.resultPopup, 5f));
+                            popupToShow.SetActive(true);
+                            StartCoroutine(DeactivatePopupAfterDelay(popupToShow, 2.5f));
                         }
                     }
                     else
@@ -185,10 +193,10 @@ public class ItemCombiner : MonoBehaviour
         img.color = c;
     }
 
-    private IEnumerator DestroyPopupAfterDelay(GameObject popup, float delay)
+    private IEnumerator DeactivatePopupAfterDelay(GameObject popup, float delay)
     {
         yield return new WaitForSeconds(delay);
         if (popup != null)
-            Destroy(popup);
+            popup.SetActive(false);
     }
 }
