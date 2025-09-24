@@ -386,9 +386,9 @@ public class GameManager : MonoBehaviour
         else if (currentCharacter.CompareTag("Character3"))
             return new string[] { "OpenHearth", "StrongerSelf" }; // due tag validi
         else if (currentCharacter.CompareTag("Character4"))
-            return new string[] { "SilentCalm" };
+            return new string[] { "LimpidVision" };
         else if (currentCharacter.CompareTag("Character5"))
-            return new string[] { "GuardianBrew", "LuckyCharm" }; // due tag validi
+            return new string[] { "GuardianBrew", "Pathfinder" }; // due tag validi
         return new string[0];
     }
 
