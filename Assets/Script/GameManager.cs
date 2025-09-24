@@ -53,6 +53,12 @@ public class GameManager : MonoBehaviour
     public GameObject nextCharacter4;           // Personaggio 5
     public GameObject currentCharacter;         // Personaggio attuale
 
+    [Header("Pop-up intermezzo per ogni personaggio")]
+    public GameObject popupIntermezzoCharacter1;
+    public GameObject popupIntermezzoCharacter2;
+    public GameObject popupIntermezzoCharacter3;
+    public GameObject popupIntermezzoCharacter4;
+
     private int currentStage = 0;                // Stage corrente (0,1,2,3,4)
     private bool waitingForNextClick = false;    // Se si aspetta il click per passare al prossimo personaggio
 
@@ -221,6 +227,17 @@ public class GameManager : MonoBehaviour
 
         currentStage++;
 
+        // Mostra popup intermezzo se presente
+        GameObject intermezzoPopup = null;
+        if (currentStage == 1) intermezzoPopup = popupIntermezzoCharacter1;
+        else if (currentStage == 2) intermezzoPopup = popupIntermezzoCharacter2;
+        else if (currentStage == 3) intermezzoPopup = popupIntermezzoCharacter3;
+        else if (currentStage == 4) intermezzoPopup = popupIntermezzoCharacter4;
+
+        if (intermezzoPopup != null)
+            yield return StartCoroutine(ShowIntermezzoPopup(intermezzoPopup));
+
+        // Attiva il prossimo personaggio
         if (currentStage == 1 && nextCharacter != null)
         {
             currentCharacter = nextCharacter;
@@ -303,6 +320,18 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    // Coroutine per mostrare il popup intermezzo
+    private IEnumerator ShowIntermezzoPopup(GameObject popup)
+    {
+        if (popup != null)
+        {
+            popup.SetActive(true);
+            yield return new WaitForSeconds(4f);
+            Destroy(popup);
+        }
+    }
+
 
 
     void ShowObjectInSlot(GameObject prefab)
