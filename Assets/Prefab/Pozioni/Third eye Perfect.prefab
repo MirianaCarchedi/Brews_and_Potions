@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5596507267835870118}
   - component: {fileID: -5690611657398887821}
   - component: {fileID: -5706968604506258172}
+  - component: {fileID: -1256464393497658736}
   m_Layer: 5
   m_Name: Third eye Perfect
   m_TagString: ThirdEye
@@ -215,3 +216,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Third Eye Perfect
+--- !u!114 &-1256464393497658736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4060739805008917401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79da920963392464fbf0010c40ae1efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

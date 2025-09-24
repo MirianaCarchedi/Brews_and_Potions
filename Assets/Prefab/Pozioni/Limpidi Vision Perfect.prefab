@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8997900949957747828}
   - component: {fileID: -5201811077994590734}
   - component: {fileID: 2366929534785829242}
+  - component: {fileID: -2755013701922812794}
   m_Layer: 5
   m_Name: Limpidi Vision Perfect
   m_TagString: LimpidVision
@@ -215,3 +216,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Limpidi Vision Perfect
+--- !u!114 &-2755013701922812794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8175459346676850368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79da920963392464fbf0010c40ae1efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

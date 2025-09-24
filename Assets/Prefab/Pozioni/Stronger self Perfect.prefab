@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4331118320107487533}
   - component: {fileID: 1016532952905996412}
   - component: {fileID: -2453329624965748165}
+  - component: {fileID: 3462311444756575768}
   m_Layer: 5
   m_Name: Stronger self Perfect
   m_TagString: StrongerSelf
@@ -215,3 +216,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Stronger Self Perfect
+--- !u!114 &3462311444756575768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756653569893400813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79da920963392464fbf0010c40ae1efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
