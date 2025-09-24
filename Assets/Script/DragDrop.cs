@@ -30,6 +30,9 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         transform.SetParent(canvas.transform); // Move to top to prevent being hidden
         canvasGroup.blocksRaycasts = false;
 
+        // Forza la scala a 1 per evitare cambi di dimensione
+        transform.localScale = Vector3.one;
+
         // Riproduci il suono (se assegnato)
         if (audioSource != null && dragSound != null)
         {
@@ -40,8 +43,8 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         var tooltip = GetComponent<ItemTooltip>();
         if (tooltip != null)
             TooltipManager.Instance.Show(tooltip.name);
-
     }
+
 
     public void OnDrag(PointerEventData eventData)
     {

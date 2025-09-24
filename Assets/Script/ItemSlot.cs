@@ -28,11 +28,13 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             DragDrop currentDragDrop = currentChild.GetComponent<DragDrop>();
 
             currentChild.transform.SetParent(otherSlot, false);
+            currentChild.transform.localScale = Vector3.one; // forza scala originale
             currentDragDrop.ResetRectTransform();
             SavePosition(currentChild.name, otherSlot.name);
         }
 
         droppedObject.transform.SetParent(currentSlot, false);
+        droppedObject.transform.localScale = Vector3.one; // forza scala originale
         draggedDrop.ResetRectTransform();
         SavePosition(droppedObject.name, currentSlot.name);
     }
@@ -53,6 +55,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             if (savedSlot == name)
             {
                 child.SetParent(transform, false);
+                child.localScale = Vector3.one; // forza scala originale
                 var dd = child.GetComponent<DragDrop>();
                 if (dd != null) dd.ResetRectTransform();
             }
