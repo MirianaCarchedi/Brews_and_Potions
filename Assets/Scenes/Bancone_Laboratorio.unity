@@ -565,6 +565,13 @@ MonoBehaviour:
   resultPreviewImage: {fileID: 1066293831}
   BrewButton: {fileID: 2049465257}
   failResultPrefab: {fileID: 5808825466004802737, guid: 3aef4f43e69c9424386900322a35c50d, type: 3}
+  forbiddenCombinations:
+  - tag1: Salvia
+    tag2: Mandrake
+  - tag1: Dragoncello
+    tag2: Artemisia
+  - tag1: Dragoncello
+    tag2: Verbena
   combinations:
   - tag1: Belladonna
     tag2: Verbena
@@ -4445,7 +4452,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1901395644}
         m_TargetAssemblyTypeName: PauseMenu1, Assembly-CSharp
-        m_MethodName: PauseGame
+        m_MethodName: PauseGame1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8036,8 +8043,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 992183946}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10055,9 +10062,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 19785318f559eb54cbac9755824d2c36, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b2efed7b97f279c47aa792badbacda07, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.184
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -13840,7 +13847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -14883,7 +14890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &715317177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15962,7 +15969,7 @@ RectTransform:
   m_Father: {fileID: 1319622117}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -18387,7 +18394,7 @@ RectTransform:
   m_Father: {fileID: 463781885}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -19091,8 +19098,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1917901339}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -19765,7 +19772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2108433942330946211, guid: 3a5e0daad0a27004790195fe968c16a1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5668685126475967477, guid: 3a5e0daad0a27004790195fe968c16a1, type: 3}
       propertyPath: canvas
@@ -22575,7 +22582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1048897263
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28585,9 +28592,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 884501828}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 0.5
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -30729,7 +30736,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1419218332
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34893,7 +34900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4869612231939211077, guid: 944004b87c4c0a142970815fba9931c1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6545230092662741940, guid: 944004b87c4c0a142970815fba9931c1, type: 3}
       propertyPath: m_Pivot.x
@@ -41339,9 +41346,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 425367895}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 0.5
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -42924,7 +42931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1993049090
 RectTransform:
   m_ObjectHideFlags: 0
@@ -46251,7 +46258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2100058227
 RectTransform:
   m_ObjectHideFlags: 0

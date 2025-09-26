@@ -27,19 +27,29 @@ public class ItemCombiner : MonoBehaviour
     public GameObject failResultPrefab;
 
     [System.Serializable]
+    public class ForbiddenCombination
+    {
+        public string tag1;
+        public string tag2;
+    }
+
+    [Header("Combinazioni proibite (skippano minigioco e danno fail)")]
+    public List<ForbiddenCombination> forbiddenCombinations = new List<ForbiddenCombination>();
+
+    [System.Serializable]
     public class CombinationData
     {
         public string tag1;
         public string tag2;
-        public GameObject resultPrefabN;  // prefab per safeZone A/B
-        public GameObject resultPrefabP;  // prefab per safeZone C
+        public GameObject resultPrefabN;
+        public GameObject resultPrefabP;
         public Sprite previewSprite;
         public Sprite postMiniGameSprite;
-        public string resultTag;          // tag univoco della combinazione
+        public string resultTag;
 
         [Header("Popup specifici per risultato")]
-        public GameObject resultPopupN; // popup per resultPrefabN
-        public GameObject resultPopupP; // popup per resultPrefabP
+        public GameObject resultPopupN;
+        public GameObject resultPopupP;
     }
 
     [Header("Combinazioni possibili")]
@@ -97,6 +107,30 @@ public class ItemCombiner : MonoBehaviour
         string tagA = objA.tag;
         string tagB = objB.tag;
 
+        // ✅ Controllo combinazioni proibite
+        foreach (var forbidden in forbiddenCombinations)
+        {
+            bool match = (forbidden.tag1 == tagA && forbidden.tag2 == tagB) ||
+                         (forbidden.tag1 == tagB && forbidden.tag2 == tagA);
+
+            if (match)
+            {
+                if (failResultPrefab != null)
+                {
+                    GameObject failItem = Instantiate(failResultPrefab);
+                    failItem.transform.SetParent(resultSlot, false);
+                    RectTransform rt = failItem.GetComponent<RectTransform>();
+                    rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+                    rt.anchoredPosition = Vector2.zero;
+                    rt.localScale = Vector3.one;
+                }
+
+                Debug.Log("Combinazione proibita: " + tagA + " + " + tagB);
+                return; // esce subito senza minigioco
+            }
+        }
+
+        // ✅ Combinazioni normali
         foreach (var combo in combinations)
         {
             bool match = (combo.tag1 == tagA && combo.tag2 == tagB) ||
@@ -120,16 +154,15 @@ public class ItemCombiner : MonoBehaviour
                         GameObject newItem = null;
                         GameObject popupToShow = null;
 
-                        // Scegli il prefab corretto in base al tag restituito dal minigioco
                         if (resultTag == "resultN" && combo.resultPrefabN != null)
                         {
                             newItem = Instantiate(combo.resultPrefabN);
-                            popupToShow = combo.resultPopupN; // usa il popup assegnato
+                            popupToShow = combo.resultPopupN;
                         }
                         else if (resultTag == "resultP" && combo.resultPrefabP != null)
                         {
                             newItem = Instantiate(combo.resultPrefabP);
-                            popupToShow = combo.resultPopupP; // usa il popup assegnato
+                            popupToShow = combo.resultPopupP;
                         }
 
                         if (newItem != null)
@@ -141,7 +174,6 @@ public class ItemCombiner : MonoBehaviour
                             rt.localScale = Vector3.one;
                         }
 
-                        // Mostra popup ogni volta e disattivalo dopo 2.5 secondi
                         if (popupToShow != null)
                         {
                             popupToShow.SetActive(true);
@@ -150,7 +182,6 @@ public class ItemCombiner : MonoBehaviour
                     }
                     else
                     {
-                        // Prefab unico per fallimento
                         if (failResultPrefab != null)
                         {
                             GameObject failItem = Instantiate(failResultPrefab);
@@ -162,7 +193,6 @@ public class ItemCombiner : MonoBehaviour
                         }
                     }
 
-                    // Aggiorna sprite post minigioco
                     if (success && resultPreviewImage != null && combo.postMiniGameSprite != null)
                     {
                         resultPreviewImage.sprite = combo.postMiniGameSprite;
