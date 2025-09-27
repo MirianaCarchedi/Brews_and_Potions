@@ -31,6 +31,10 @@ TagManager:
   - PlaceHolder2
   - PlaceHolder1
   - HolyStrength
+  - PopUpArtemisia
+  - PopUpVerbena
+  - PopUpSalvia
+  - PopUpDragoncello
   layers:
   - Default
   - TransparentFX
