@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject sfondoNeroCanvas;
 
     private bool hasStarted = false;
+    private bool firstStepClicked = false;
 
     public GameObject slot;
 
@@ -77,9 +78,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Time.timeScale = 1f;
-        StartCoroutine(FadeIn());
+        // Ferma il tempo all’inizio
+        Time.timeScale = 0f;
 
+        // Imposta audio in pausa
+        if (audioSource != null)
+            audioSource.Pause();
+
+        StartCoroutine(FadeIn());
     }
 
     void OnEnable()
@@ -125,7 +131,10 @@ public class GameManager : MonoBehaviour
     IEnumerator PlaySequenceForCurrentCharacter(Animator characterAnim)
     {
         yield return new WaitForSeconds(0f);
-        audioSource.PlayOneShot(soundEffect);
+
+        // AUDIO: parte solo se il primo step è stato cliccato
+        if (firstStepClicked && audioSource != null && soundEffect != null)
+            audioSource.PlayOneShot(soundEffect);
 
         if (currentCharacter.CompareTag("Character1"))
             characterAnim.Play("Mario_Animation", 0);
@@ -164,6 +173,27 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
+    // ====================== NUOVO ======================
+    public void OnFirstStepClicked()
+    {
+        // Abilita tempo
+        Time.timeScale = 1f;
+
+        // Sblocca audio
+        if (audioSource != null)
+            audioSource.UnPause();
+
+        // Disattiva popup ricorrente
+        bubbleAnimator.gameObject.SetActive(false);
+        firstStepClicked = true;
+
+        // Puoi far partire la prima animazione con audio ora
+        Animator currentAnimator = currentCharacter.GetComponent<Animator>();
+        if (currentAnimator != null)
+            StartCoroutine(PlaySequenceForCurrentCharacter(currentAnimator));
+    }
+    // ====================== FINE ======================
+
     public void OnButtonClicked()
     {
         if (slot.transform.childCount > 0)
@@ -187,32 +217,24 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-
-
             if (isCorrect)
             {
                 messageToShow = GetFinalMessageForCurrentCharacter();
-                // Controlla se l'oggetto o uno dei figli ha il componente PerfectPoint
                 bool hasPerfect = droppedObject.GetComponentInChildren<PerfectPoint>() != null;
 
                 if (hasPerfect)
                     currentPoints += 10;
                 else
                     currentPoints += 5;
-
             }
             else
             {
                 messageToShow = GetNegativeMessageForCurrentCharacter();
-
-                // Sottrae 3 punti
                 currentPoints -= 3;
             }
 
-            // Limita i punti tra 0 e maxPoints
             currentPoints = Mathf.Clamp(currentPoints, 0, maxPoints);
 
-            // Aggiorna entrambe le barre
             float fillAmount = (float)currentPoints / maxPoints;
 
             if (pointsBarController1 != null)
@@ -232,7 +254,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void OnAdvanceButtonClicked()
     {
         StartCoroutine(ExitCurrentAndAdvance());
@@ -245,25 +266,25 @@ public class GameManager : MonoBehaviour
     {
         if (characterExitAnimator != null)
         {
-            if (currentCharacter.CompareTag("Character1"))
-                characterExitAnimator.Play("Mario_Exit", 0);
-            else if (currentCharacter.CompareTag("Character2"))
-                characterExitAnimator.Play("Student_Exit", 0);
-            else if (currentCharacter.CompareTag("Character3"))
-                characterExitAnimator.Play("Lady_Exit", 0);
-            else if (currentCharacter.CompareTag("Character4"))
-                characterExitAnimator.Play("Artist_Exit", 0);
-            else if (currentCharacter.CompareTag("Character5"))
-                characterExitAnimator.Play("Traveler_Exit", 0);
+            if (currentCharacter != null)
+            {
+                if (currentCharacter.CompareTag("Character1"))
+                    characterExitAnimator.Play("Mario_Exit", 0);
+                else if (currentCharacter.CompareTag("Character2"))
+                    characterExitAnimator.Play("Student_Exit", 0);
+                else if (currentCharacter.CompareTag("Character3"))
+                    characterExitAnimator.Play("Lady_Exit", 0);
+                else if (currentCharacter.CompareTag("Character4"))
+                    characterExitAnimator.Play("Artist_Exit", 0);
+                else if (currentCharacter.CompareTag("Character5"))
+                    characterExitAnimator.Play("Traveler_Exit", 0);
 
-            yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(2f);
+            }
         }
 
         if (currentCharacter != null)
-        {
             currentCharacter.SetActive(false);
-            textComponent.text = "";
-        }
 
         currentStage++;
 
@@ -276,6 +297,7 @@ public class GameManager : MonoBehaviour
         if (intermezzoPopup != null)
             yield return StartCoroutine(ShowIntermezzoPopup(intermezzoPopup));
 
+        // Gestione successivo character
         if (currentStage == 1 && nextCharacter != null)
         {
             currentCharacter = nextCharacter;
@@ -330,23 +352,20 @@ public class GameManager : MonoBehaviour
         }
         else if (currentStage >= 5)
         {
-            if (characterExitAnimator != null)
+            if (characterExitAnimator != null && currentCharacter != null)
             {
-                if (currentCharacter != null)
-                {
-                    if (currentCharacter.CompareTag("Character1"))
-                        characterExitAnimator.Play("Mario_Exit", 0);
-                    else if (currentCharacter.CompareTag("Character2"))
-                        characterExitAnimator.Play("Student_Exit", 0);
-                    else if (currentCharacter.CompareTag("Character3"))
-                        characterExitAnimator.Play("Lady_Exit", 0);
-                    else if (currentCharacter.CompareTag("Character4"))
-                        characterExitAnimator.Play("Artist_Exit", 0);
-                    else if (currentCharacter.CompareTag("Character5"))
-                        characterExitAnimator.Play("Traveler_Exit", 0);
+                if (currentCharacter.CompareTag("Character1"))
+                    characterExitAnimator.Play("Mario_Exit", 0);
+                else if (currentCharacter.CompareTag("Character2"))
+                    characterExitAnimator.Play("Student_Exit", 0);
+                else if (currentCharacter.CompareTag("Character3"))
+                    characterExitAnimator.Play("Lady_Exit", 0);
+                else if (currentCharacter.CompareTag("Character4"))
+                    characterExitAnimator.Play("Artist_Exit", 0);
+                else if (currentCharacter.CompareTag("Character5"))
+                    characterExitAnimator.Play("Traveler_Exit", 0);
 
-                    yield return new WaitForSeconds(2f);
-                }
+                yield return new WaitForSeconds(2f);
             }
 
             if (currentCharacter != null)
@@ -385,15 +404,13 @@ public class GameManager : MonoBehaviour
         else if (currentCharacter.CompareTag("Character2"))
             return new string[] { "LightMind" };
         else if (currentCharacter.CompareTag("Character3"))
-            return new string[] { "OpenHearth", "StrongerSelf" }; // due tag validi
+            return new string[] { "OpenHearth", "StrongerSelf" };
         else if (currentCharacter.CompareTag("Character4"))
             return new string[] { "LimpidVision" };
         else if (currentCharacter.CompareTag("Character5"))
-            return new string[] { "GuardianBrew", "Pathfinder" }; // due tag validi
+            return new string[] { "GuardianBrew", "Pathfinder" };
         return new string[0];
     }
-
-
 
     string GetInitialMessageForCurrentCharacter()
     {
@@ -440,3 +457,4 @@ public class GameManager : MonoBehaviour
         return "";
     }
 }
+
