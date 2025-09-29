@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private TutorialManager tutorialManager;
+    public GameObject panelButtonTutorial;
     public Animator bubbleAnimator;
     public Animator fadeOut_Animator;
 
@@ -97,7 +99,7 @@ public class GameManager : MonoBehaviour
                 Animator currentAnimator = currentCharacter.GetComponent<Animator>();
                 if (currentAnimator != null)
                 {
-                    StartCoroutine(PlaySequenceForCurrentCharacter(currentAnimator));
+
                 }
             }
             hasStarted = true;
@@ -184,7 +186,7 @@ public class GameManager : MonoBehaviour
             audioSource.UnPause();
 
         // Disattiva popup ricorrente
-        bubbleAnimator.gameObject.SetActive(false);
+        
         firstStepClicked = true;
 
         // Puoi far partire la prima animazione con audio ora
@@ -387,7 +389,27 @@ public class GameManager : MonoBehaviour
             Destroy(popup);
         }
     }
+    public void ShowPositivePotionPopup()
+    {
+        if (panelButtonTutorial != null)
+        {  
+                
+           StartCoroutine(DelayedGoToStep());
 
+        }
+    }
+
+    private IEnumerator DelayedGoToStep()
+    {
+        yield return new WaitForSeconds(1.5f); // ritardo di 1 secondo
+
+        if (tutorialManager != null)
+        {
+            panelButtonTutorial.SetActive(true);
+            tutorialManager.StopAllCoroutines();  
+            tutorialManager.GoToStep(16);
+        }
+    }
     void ShowObjectInSlot(GameObject prefab)
     {
         if (prefab != null && slotToShowObject != null)

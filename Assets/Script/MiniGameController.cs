@@ -6,6 +6,9 @@ using System.Collections;
 
 public class MiniGameController : MonoBehaviour
 {
+   
+    [SerializeField] private TutorialManager tutorialManager; // <-- aggiungi questa riga
+
     [Header("Modalità DRAG")]
     public RectTransform draggableImage;
     public float successThreshold = 0f; // in drag mode basta muoverlo
@@ -24,6 +27,7 @@ public class MiniGameController : MonoBehaviour
 
     [Header("UI Panel")]
     public GameObject pointerPanel;
+    public GameObject panelButtonTutorial;
 
     [Header("Popup risultati")]
     public List<GameObject> resultPopups; // popup per resultN e resultP
@@ -94,7 +98,7 @@ public class MiniGameController : MonoBehaviour
                 if (popup != null && popup.name == resultTag)
                 {
                     popup.SetActive(true);
-                    StartCoroutine(DestroyPopupAfterDelay(popup, 5f)); // ✅ Distrugge completamente dopo 5 secondi
+                    StartCoroutine(DestroyPopupAfterDelay(popup, 5f)); //  Distrugge completamente dopo 5 secondi
                     break;
                 }
             }
@@ -163,6 +167,11 @@ public class MiniGameController : MonoBehaviour
 
     public void StartPointerPhase()
     {
+        if (tutorialManager != null)
+        {
+            tutorialManager.GoToStep(11);
+        }
+
         // Mostra lo sprite post-minigioco usando il metodo pubblico
         if (itemCombiner != null)
             itemCombiner.ShowPostMiniGameSprite(itemCombiner.CurrentCombination);
@@ -179,8 +188,11 @@ public class MiniGameController : MonoBehaviour
             pointerPanel.SetActive(true);
     }
 
+
+
     private void HandlePointerMode()
     {
+
         if (pointerStopped) return;
 
         pointer.position = Vector3.MoveTowards(pointer.position, pointerTarget, moveSpeed * Time.deltaTime);
@@ -201,15 +213,25 @@ public class MiniGameController : MonoBehaviour
                 RectTransformUtility.RectangleContainsScreenPoint(safeZoneB, pointer.position, null))
             {
                 EndMiniGame(true, "resultN");
+                // Pozione buona
+                if (tutorialManager != null)
+                    tutorialManager.GoToStep(12); 
             }
             else if (RectTransformUtility.RectangleContainsScreenPoint(safeZoneC, pointer.position, null))
             {
                 EndMiniGame(true, "resultP");
+                // Pozione perfetta
+                if (tutorialManager != null)
+                    tutorialManager.GoToStep(11); 
             }
             else
             {
                 EndMiniGame(false, currentResultTag);
+                // Pozione fallita
+                if (tutorialManager != null)
+                    tutorialManager.GoToStep(13); 
             }
+
         }
     }
 }

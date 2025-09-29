@@ -5,14 +5,18 @@ using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
+
     [System.Serializable]
     public class TutorialStep
     {
         [TextArea] public string popupText;
         public GameObject popupCanvas;
-        public Button nextButton;       
-        public float autoHideTime = 0f; 
-        public float delayBeforeNextStep = 0f; 
+        public Button nextButton;
+        public float autoHideTime = 0f;
+        public float delayBeforeNextStep = 0f;
+
+        [Header("Condizione personalizzata")]
+        public bool waitForCondition = false; // solo per step specifici
     }
 
     [Header("Lista completa degli step del tutorial")]
@@ -21,12 +25,33 @@ public class TutorialManager : MonoBehaviour
     [Header("Audio da silenziare durante il tutorial")]
     public List<AudioSource> audioSourcesToMute = new List<AudioSource>();
 
+    [Header("Riferimenti agli ingredienti")]
+    public Transform plateA; //  primo piatto
+    public Transform plateB; //  secondo piatto
+
     private int currentStepIndex = 0;
+    public int CurrentStepIndex => currentStepIndex;
+
     private bool tutorialRunning = false;
 
     void Start()
     {
         StartTutorial();
+    }
+
+    public void AdvanceCurrentStep()
+    {
+        if (currentStepIndex < steps.Count)
+        {
+            StartCoroutine(NextStepWithDelay(0f));
+        }
+    }
+
+    public void GoToStep(int stepIndex)
+    {
+        if (stepIndex < 0 || stepIndex >= steps.Count) return;
+        StopAllCoroutines(); // interrompi eventuali coroutine in corso
+        ShowStep(stepIndex);
     }
 
     public void StartTutorial()
@@ -67,11 +92,9 @@ public class TutorialManager : MonoBehaviour
             stepToShow.nextButton.onClick.RemoveAllListeners();
             stepToShow.nextButton.onClick.AddListener(() =>
             {
-                // Disattiva popup ricorrente
                 if (stepToShow.popupCanvas != null)
                     stepToShow.popupCanvas.SetActive(false);
 
-                // Ripristina tempo e audio se è il primo step
                 if (isFirstStep)
                 {
                     Time.timeScale = 1f;
@@ -83,12 +106,17 @@ public class TutorialManager : MonoBehaviour
             });
         }
 
-        // Gestione auto-hide se impostato
-        if (!isFirstStep && stepToShow.autoHideTime > 0)
+        // Esegui WaitForPlatesCondition solo per lo step 7 (indice 6)
+        if (stepToShow.waitForCondition && currentStepIndex == 7)
+        {
+            StartCoroutine(WaitForPlatesCondition(stepToShow));
+        }
+        else if (!isFirstStep && stepToShow.autoHideTime > 0)
         {
             StartCoroutine(AutoHideStep(stepToShow));
         }
     }
+
 
     IEnumerator AutoHideStep(TutorialStep step)
     {
@@ -114,6 +142,22 @@ public class TutorialManager : MonoBehaviour
         {
             EndTutorial();
         }
+    }
+
+    IEnumerator WaitForPlatesCondition(TutorialStep step )
+    {
+        yield return new WaitUntil(() => AreBothIngredientsOnPlates());
+
+        if (step.popupCanvas != null)
+            step.popupCanvas.SetActive(false);
+
+        yield return StartCoroutine(NextStepWithDelay(step.delayBeforeNextStep));
+    }
+
+    private bool AreBothIngredientsOnPlates()
+    {
+        return plateA != null && plateB != null &&
+               plateA.childCount > 0 && plateB.childCount > 0;
     }
 
     void EndTutorial()

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class TrashSlot : MonoBehaviour, IDropHandler
 {
+    [SerializeField] private TutorialManager tutorialManager;
     [Tooltip("Tag che non devono essere distrutti")]
     public List<string> allowedTags = new List<string> { "Artemisia", "Belladonna", "Verbena", "Mandrake" };
 
@@ -15,6 +16,10 @@ public class TrashSlot : MonoBehaviour, IDropHandler
         string tag = dropped.tag;
         if (!allowedTags.Contains(tag))
         {
+ 
+            if (tutorialManager != null)
+                tutorialManager.GoToStep(13);
+
             Destroy(dropped);
         }
         else
