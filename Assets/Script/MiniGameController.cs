@@ -169,7 +169,7 @@ public class MiniGameController : MonoBehaviour
     {
         if (tutorialManager != null)
         {
-            tutorialManager.GoToStep(11);
+            tutorialManager.GoToStep(10);
         }
 
         // Mostra lo sprite post-minigioco usando il metodo pubblico

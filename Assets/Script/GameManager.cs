@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject panelButtonTutorial;
     public Animator bubbleAnimator;
     public Animator fadeOut_Animator;
+    public GameObject Diciottesimo;
 
     public TypingEffect typingEffect;
     public TMPro.TextMeshProUGUI textComponent;
@@ -81,11 +82,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // Ferma il tempo all’inizio
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
 
-        // Imposta audio in pausa
-        if (audioSource != null)
-            audioSource.Pause();
+        Animator currentAnimator = currentCharacter.GetComponent<Animator>();
+        if (currentAnimator != null)
+            StartCoroutine(PlaySequenceForCurrentCharacter(currentAnimator));
 
         StartCoroutine(FadeIn());
     }
@@ -134,8 +135,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0f);
 
-        // AUDIO: parte solo se il primo step è stato cliccato
-        if (firstStepClicked && audioSource != null && soundEffect != null)
             audioSource.PlayOneShot(soundEffect);
 
         if (currentCharacter.CompareTag("Character1"))
@@ -154,6 +153,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PlayStandByAnimation(characterAnim));
 
         bubbleAnimator.gameObject.SetActive(true);
+        
+        
         typingEffect.StartTyping(GetInitialMessageForCurrentCharacter());
     }
 
@@ -161,10 +162,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3.5f);
 
-        if (currentCharacter.CompareTag("Character1"))
+        if (currentCharacter.CompareTag("Character1")) 
             characterAnim.Play("Mario_StandBy", 0);
         else if (currentCharacter.CompareTag("Character2"))
-            characterAnim.Play("Student_StandBy", 0);
+        characterAnim.Play("Student_StandBy", 0);
         else if (currentCharacter.CompareTag("Character3"))
             characterAnim.Play("Lady_StandBy", 0);
         else if (currentCharacter.CompareTag("Character4"))
@@ -173,9 +174,12 @@ public class GameManager : MonoBehaviour
             characterAnim.Play("Traveler_StandBy", 0);
 
         yield return null;
+        
+        
+        
     }
 
-    // ====================== NUOVO ======================
+    /* ====================== NUOVO ======================
     public void OnFirstStepClicked()
     {
         // Abilita tempo
@@ -194,7 +198,7 @@ public class GameManager : MonoBehaviour
         if (currentAnimator != null)
             StartCoroutine(PlaySequenceForCurrentCharacter(currentAnimator));
     }
-    // ====================== FINE ======================
+    ====================== FINE ======================*/
 
     public void OnButtonClicked()
     {
@@ -245,6 +249,7 @@ public class GameManager : MonoBehaviour
             if (pointsBarController2 != null)
                 pointsBarController2.SetFill(fillAmount);
 
+            
             typingEffect.StartTyping(messageToShow);
 
             if (advanceButton != null)
@@ -436,6 +441,7 @@ public class GameManager : MonoBehaviour
 
     string GetInitialMessageForCurrentCharacter()
     {
+        
         if (currentCharacter.CompareTag("Character1"))
             return messageCharacter1;
         else if (currentCharacter.CompareTag("Character2"))
@@ -478,5 +484,6 @@ public class GameManager : MonoBehaviour
             return negativeMessageCharacter5;
         return "";
     }
+
 }
 

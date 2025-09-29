@@ -36,6 +36,7 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        
         StartTutorial();
     }
 
@@ -61,10 +62,6 @@ public class TutorialManager : MonoBehaviour
         tutorialRunning = true;
         currentStepIndex = 0;
 
-        // Blocca tempo e audio
-        Time.timeScale = 0f;
-        foreach (var aud in audioSourcesToMute)
-            aud.Pause();
 
         ShowStep(currentStepIndex, true);
     }
