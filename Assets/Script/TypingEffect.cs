@@ -6,6 +6,8 @@ public class TypingEffect : MonoBehaviour
 {
     public TextMeshProUGUI text;
     public float delay = 0.05f;
+    public GameObject primo;
+    bool firstcharacter = true;
 
     // Questo è il nuovo metodo pubblico
     public void StartTyping(string fullText)
@@ -22,6 +24,12 @@ public class TypingEffect : MonoBehaviour
         {
             text.text += c;
             yield return new WaitForSeconds(delay);
+            if (text.text == fullText && firstcharacter == true)
+            {
+                firstcharacter = false;
+                primo.SetActive(true);
+
+            }
         }
     }
 }

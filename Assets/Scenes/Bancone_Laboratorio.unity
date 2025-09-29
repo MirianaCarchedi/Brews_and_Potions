@@ -53329,7 +53329,6 @@ GameObject:
   - component: {fileID: 1901395640}
   - component: {fileID: 1901395642}
   - component: {fileID: 1901395644}
-  - component: {fileID: 1901395646}
   - component: {fileID: 1901395645}
   m_Layer: 5
   m_Name: GameManager
@@ -53371,6 +53370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1783012173}
   delay: 0.04
+  primo: {fileID: 628498364}
 --- !u!114 &1901395638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53519,20 +53519,6 @@ MonoBehaviour:
   fillImage1: {fileID: 711197332}
   fillImage2: {fileID: 437300792}
   currentFill: 0
---- !u!114 &1901395646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901395635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 803d17f04daa6eb459786ac10a9f8027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reactivateTime: 6
-  primo: {fileID: 628498364}
 --- !u!1 &1903201391
 GameObject:
   m_ObjectHideFlags: 0
@@ -53639,17 +53625,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 231195547}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1903201394
 MonoBehaviour:
@@ -60594,17 +60580,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1205956008}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &2127694819
 MonoBehaviour:
